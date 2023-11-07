@@ -1,4 +1,4 @@
-"""Basic code for Keplerian orbits"""
+"""Basic utility for Keplerian orbits"""
 from typing import Union
 
 import numpy as np
