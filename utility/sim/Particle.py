@@ -16,15 +16,14 @@ class Particle:
             velocity=np.array([0, 0, 0], dtype=float),
             acceleration=np.array([0, 0, 0], dtype=float),
             name='Ball',
-            mass=1.0
+            mu=1.0
     ):
         """Class initialisation method which sets the received arguments as object attributes"""
         self.name = name
-        self.mass = mass
+        self.mu = mu
         self.position = np.array(position, dtype=float)
         self.velocity = np.array(velocity, dtype=float)
         self.acceleration = np.array(acceleration, dtype=float)
-        self.G = 6.67408E-11
 
     def __str__(self):
         """Prints the object attributes as a string if the object is called directly"""
@@ -79,39 +78,9 @@ class Particle:
 
         sep = np.linalg.norm(self.position - body.position)
         normalised_sep = (self.position - body.position) / sep
-        grav_accel_mag = -(body.G * body.mass) / (sep**2)
+        grav_accel_mag = -self.mu / (sep**2)
         grav_accel = grav_accel_mag * normalised_sep
         return grav_accel
-
-    def kineticEnergy(self):
-        """
-        Calculates the kinetic energy of the particle
-
-        :return: The value of the particle's kinetic energy
-        """
-        return 0.5 * self.mass * (np.linalg.norm(self.velocity))**2
-
-    def potentialEnergy(self, body):
-        """
-        Calculates the gravitational potential energy of the particle due to a second body
-
-        :param body: The second body causing the potential energy (Particle.py Particle object)
-
-        :return: The value of the potential energy
-        """
-        sep = np.linalg.norm(self.position - body.position)
-        return (body.G * body.mass * self.mass) / sep
-
-    def momentum(self):
-        """
-        Calculates the total momentum of the particle
-
-        :return: A list of x, y, z momentums
-        """
-        x_mom = self.mass * self.velocity[0]
-        y_mom = self.mass * self.velocity[1]
-        z_mom = self.mass * self.velocity[2]
-        return [x_mom, y_mom, z_mom]
 
 
 # Console error message if script is run directly
