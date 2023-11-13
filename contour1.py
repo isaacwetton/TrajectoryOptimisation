@@ -9,7 +9,7 @@ from scipy.constants import G
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Create arrays of orbiter starting position and angles
-s1, s2 = 8, 10
+s1, s2 = 8, 15
 deltas = np.linspace(0, 2*np.pi, s1, endpoint=False)
 phis = np.linspace(-np.pi / 4, np.pi / 4, s2)
 x, y = np.meshgrid(deltas, phis)
