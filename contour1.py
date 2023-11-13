@@ -13,7 +13,7 @@ s1, s2 = 8, 15
 deltas = np.linspace(0, 2*np.pi, s1, endpoint=False)
 phis = np.linspace(-np.pi / 4, np.pi / 4, s2)
 x, y = np.meshgrid(deltas, phis)
-z = np.zeros((s1, s2))
+z = np.zeros((s2, s1))
 
 # Define variable for monitoring of global best solution
 best = np.array([0, 0, initial_Jdist], dtype=float)
