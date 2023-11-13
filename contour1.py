@@ -1,5 +1,4 @@
 import constants
-import kepler
 import numpy as np
 import bodies
 from matplotlib import pyplot as plt
@@ -10,7 +9,7 @@ from scipy.constants import G
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Create arrays of orbiter starting position and angles
-s1, s2 = 5, 5
+s1, s2 = 10, 10
 deltas = np.linspace(0, 2*np.pi, s1)
 phis = np.linspace(-np.pi / 4, np.pi / 4, s2)
 x, y = np.meshgrid(deltas, phis)
@@ -63,7 +62,9 @@ for i in range(0, len(deltas)):
 fig = plt.figure()
 contour = plt.contourf(x, y, z, 500)
 plt.colorbar(contour)
-
+plt.xlabel("phi (rad)")
+plt.ylabel("delta (rad)")
+plt.title("Contour plot of Closest Approach to Callisto as a Function of delta and phi")
 plt.show()
 
 
