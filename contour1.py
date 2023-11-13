@@ -71,7 +71,7 @@ cbar = plt.colorbar(contour)
 cbar.set_label("Closest Approach to Callisto (km)")
 plt.xlabel(r"$\delta$ (rad)")
 plt.ylabel(r"$\phi$ (rad)")
-plt.title("Contour plot of Closest Approach to Callisto (km) as a Function of delta and phi")
+plt.title(r"Contour plot of Closest Approach to Callisto (km) as a Function of $\delta$ and $\phi$")
 # plt.ylim([-np.pi / 4, np.pi / 4])
 # plt.xlim([0, 2*np.pi])
 
