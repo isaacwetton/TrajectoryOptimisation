@@ -10,19 +10,23 @@ from scipy.constants import G
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Create arrays of orbiter starting position and angles
-deltas = np.linspace(0, 2*np.pi, 5)
-phis = np.linspace(-np.pi / 4, np.pi / 4, 5)
+s1, s2 = 5, 5
+deltas = np.linspace(0, 2*np.pi, s1)
+phis = np.linspace(-np.pi / 4, np.pi / 4, s2)
+x, y = np.meshgrid(deltas, phis)
+z = np.zeros((s1, s2))
 
 # Initialise Jupiter object
 jupiter = Particle.Particle(name="Jupiter", mu=constants.MU_JUPITER)
 
 # Model orbiter for each delta-phi combination
-for delta in deltas:
-
+for i in range(0, len(deltas)):
+    delta = deltas[i]
     # Calculate initial orbiter pos
     initpos = np.array([initial_Jdist * np.cos(delta), initial_Jdist * np.sin(delta), 0], dtype=float)
 
-    for phi in phis:
+    for j in range(0, len(phis)):
+        phi = phis[j]
         # Initialise Callisto
         cal = bodies.get_callisto()
 
@@ -52,5 +56,5 @@ for delta in deltas:
                 closest_approach = cal_dist
 
         # Record closest_approach for the delta-phi combination
-        
+        z[j][i] = closest_approach
 
