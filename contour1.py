@@ -2,7 +2,7 @@ import constants
 import kepler
 import numpy as np
 import bodies
-import matplotlib as plt
+from matplotlib import pyplot as plt
 from sim import Particle
 from scipy.constants import G
 
@@ -57,4 +57,12 @@ for i in range(0, len(deltas)):
 
         # Record closest_approach for the delta-phi combination
         z[j][i] = closest_approach
+
+# Create contour plot
+fig = plt.figure()
+contour = plt.contour(x, y, z)
+plt.colorbar(contour)
+
+plt.show()
+
 
