@@ -2,7 +2,6 @@ import constants
 import numpy as np
 import bodies
 from matplotlib import pyplot as plt
-from matplotlib import ticker as tck
 from sim import Particle
 from scipy.constants import G
 
@@ -64,6 +63,9 @@ for i in range(0, len(deltas)):
         # Record closest_approach for the delta-phi combination
         z[j][i] = closest_approach
 
+# Output best solution
+print(best)
+
 # Create contour plot
 fig = plt.figure()
 contour = plt.contourf(x, y, z, 500)
@@ -72,14 +74,6 @@ cbar.set_label("Closest Approach to Callisto (km)")
 plt.xlabel(r"$\delta$ (rad)")
 plt.ylabel(r"$\phi$ (rad)")
 plt.title(r"Contour plot of Closest Approach to Callisto (km) as a Function of $\delta$ and $\phi$")
-# plt.ylim([-np.pi / 4, np.pi / 4])
-# plt.xlim([0, 2*np.pi])
-
-# ax.xaxis.set_major_formatter(tck.FormatStrFormatter('%g $\pi$'))
-# ax.xaxis.set_major_locator(tck.MultipleLocator(base=1/2))
-# ax.yaxis.set_major_formatter(tck.FormatStrFormatter('%g $\pi$'))
-# ax.yaxis.set_major_locator(tck.MultipleLocator(base=1/4))
-# plt.style.use("ggplot")
 
 plt.show()
 
