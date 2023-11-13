@@ -47,8 +47,9 @@ for i in range(0, len(deltas)):
 
         while Jdist <= initial_Jdist:
             orbiter.acceleration = orbiter.updateGravitationalAcceleration(jupiter)
-            orbiter.update_eulerCromer(100)
-            T += 100
+            deltaT = 100
+            orbiter.update_eulerCromer(deltaT)
+            T += deltaT
             Jdist = np.linalg.norm(orbiter.position - jupiter.position)
             cal_pos = cal(T)[0:3]
             cal_dist = np.linalg.norm(cal_pos - orbiter.position)
@@ -60,7 +61,7 @@ for i in range(0, len(deltas)):
 
 # Create contour plot
 fig = plt.figure()
-contour = plt.contour(x, y, z)
+contour = plt.contourf(x, y, z, 500)
 plt.colorbar(contour)
 
 plt.show()
