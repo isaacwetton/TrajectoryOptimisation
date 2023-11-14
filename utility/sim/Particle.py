@@ -78,7 +78,7 @@ class Particle:
 
         sep = np.linalg.norm(self.position - body.position)
         normalised_sep = (self.position - body.position) / sep
-        grav_accel_mag = -self.mu / (sep**2)
+        grav_accel_mag = -body.mu / (sep**2)
         grav_accel = grav_accel_mag * normalised_sep
         return grav_accel
 
