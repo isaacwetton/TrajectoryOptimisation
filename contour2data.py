@@ -10,8 +10,8 @@ initial_Jdist = 1000 * constants.R_JUPITER
 
 # Create arrays of orbiter starting position and angles
 s1, s2 = 8, 15
-deltas = np.linspace(0, np.pi, s1, endpoint=False)
-phis = np.linspace(0.02, 0.04, s2)
+deltas = np.linspace(3.0, 6.0, s1, endpoint=False)
+phis = np.linspace(-0.025, 0.025, s2)
 x, y = np.meshgrid(deltas, phis)
 z = np.zeros((s2, s1))
 
@@ -67,6 +67,6 @@ for i in range(0, len(deltas)):
 print(best)
 
 # Save data
-f = open("data/contour2data2.dat", "wb")
+f = open("data/contour2data3.dat", "wb")
 pickle.dump((x, y, z), f, True)
 f.close()

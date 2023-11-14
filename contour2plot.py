@@ -2,7 +2,7 @@ import pickle
 from matplotlib import pyplot as plt
 
 # Load data
-f = open("data/contour2data.dat", "rb")
+f = open("data/contour2data3.dat", "rb")
 (x, y, z) = pickle.load(f)
 f.close()
 
