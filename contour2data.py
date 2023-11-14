@@ -9,9 +9,9 @@ from scipy.constants import G
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Create arrays of orbiter starting position and angles
-s1, s2 = 8, 15
-deltas = np.linspace(3.0, 6.0, s1, endpoint=False)
-phis = np.linspace(-0.025, 0.025, s2)
+s1, s2 = 10, 20
+deltas = np.linspace(0, 2*np.pi, s1, endpoint=False)
+phis = np.linspace(-np.pi / 4, np.pi / 4, s2)
 x, y = np.meshgrid(deltas, phis)
 z = np.zeros((s2, s1))
 
@@ -20,6 +20,9 @@ best = np.array([0, 0, initial_Jdist], dtype=float)
 
 # Initialise Jupiter object
 jupiter = Particle.Particle(name="Jupiter", mu=constants.MU_JUPITER)
+
+# Define evolution timestep
+deltaT = 400
 
 # Model orbiter for each delta-phi combination
 for i in range(0, len(deltas)):
@@ -49,7 +52,6 @@ for i in range(0, len(deltas)):
 
         while Jdist <= initial_Jdist:
             orbiter.acceleration = orbiter.updateGravitationalAcceleration(jupiter)
-            deltaT = 200
             orbiter.update_eulerCromer(deltaT)
             T += deltaT
             Jdist = np.linalg.norm(orbiter.position - jupiter.position)
@@ -60,13 +62,17 @@ for i in range(0, len(deltas)):
                 if cal_dist < best[2]:
                     best = np.array([delta, phi, cal_dist], dtype=float)
 
-        # Record closest_approach for the delta-phi combination
+            # Break if retreating from Jupiter
+            elif cal_dist > closest_approach + 100 * constants.R_JUPITER:
+                break
+
+        # Record closest approach for the delta-phi combination
         z[j][i] = closest_approach
 
 # Output best solution
 print(best)
 
 # Save data
-f = open("data/contour2data3.dat", "wb")
+f = open("data/contour2data.dat", "wb")
 pickle.dump((x, y, z), f, True)
 f.close()

@@ -1,7 +1,6 @@
 import constants
 import numpy as np
 import bodies
-import pickle
 from sim import Particle
 from scipy.constants import G
 from matplotlib import pyplot as plt
