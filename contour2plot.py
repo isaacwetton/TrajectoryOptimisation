@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 
 # Load data
 f = open("data/contour2data.dat", "rb")
-(x, y, z) = pickle.load("data/contour2data.dat")
+(x, y, z) = pickle.load(f)
 f.close()
 
 # Create contour plot
