@@ -2,7 +2,9 @@ import pickle
 from matplotlib import pyplot as plt
 
 # Load data
+f = open("data/contour2data.dat", "rb")
 (x, y, z) = pickle.load("data/contour2data.dat")
+f.close()
 
 # Create contour plot
 fig = plt.figure()

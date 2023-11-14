@@ -67,4 +67,6 @@ for i in range(0, len(deltas)):
 print(best)
 
 # Save data
-pickle.dump((x, y, z), "data/contour2data.dat", True)
+f = open("data/contour2data.dat", "wb")
+pickle.dump((x, y, z), f, True)
+f.close()
