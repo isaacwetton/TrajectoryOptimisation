@@ -9,9 +9,9 @@ from scipy.constants import G
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Create arrays of orbiter starting position and angles
-s1, s2 = 10, 20
-deltas = np.linspace(0, 2*np.pi, s1, endpoint=False)
-phis = np.linspace(-np.pi / 4, np.pi / 4, s2)
+s1, s2 = 10, 10
+deltas = np.linspace(0, 1, s1)
+phis = np.linspace(0.05, 0.10, s2)
 x, y = np.meshgrid(deltas, phis)
 z = np.zeros((s2, s1))
 
@@ -22,7 +22,7 @@ best = np.array([0, 0, initial_Jdist], dtype=float)
 jupiter = Particle.Particle(name="Jupiter", mu=constants.MU_JUPITER)
 
 # Define evolution timestep
-deltaT = 400
+deltaT = 200
 
 # Model orbiter for each delta-phi combination
 for i in range(0, len(deltas)):
@@ -73,6 +73,6 @@ for i in range(0, len(deltas)):
 print(best)
 
 # Save data
-f = open("data/contour2data.dat", "wb")
+f = open("data/contour2data4.dat", "wb")
 pickle.dump((x, y, z), f, True)
 f.close()
