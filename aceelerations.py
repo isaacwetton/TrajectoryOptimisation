@@ -69,6 +69,6 @@ plt.xlabel(r"Time (s)")
 plt.ylabel(r"log(acceleration contribution magnitude)")
 plt.xlim(0, 3.5e7)
 plt.legend(["Jupiter", "Callisto"])
-plt.title(r"Timeseries of Orbiter Acceleration Contributions from Jupiter and Callisto for $\delta = 0.0833$ and "
-          r"$\phi = 0.778$")
+plt.title(r"Timeseries of Orbiter Acceleration Contributions from Jupiter and Callisto for $\delta = 0.778$ and "
+          r"$\phi = 0.0833$")
 plt.show()
