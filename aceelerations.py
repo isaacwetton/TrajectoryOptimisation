@@ -12,8 +12,8 @@ initial_Jdist = 1000 * constants.R_JUPITER
 jupiter = Particle.Particle(name="Jupiter", mu=constants.MU_JUPITER)
 
 # Model orbiter for each delta-phi combination
-phi = 0.025
-delta = 0.5
+phi = 0.0895
+delta = 0.440
 
 # Initialise Callisto
 cal = bodies.get_callisto()
@@ -55,12 +55,20 @@ while Jdist <= initial_Jdist:
     accs_jup.append(np.linalg.norm(orbiter.acceleration))
     pos.append(orbiter.position[:2])
 
+# Set starting time to zero
+for i in range(0, len(times)):
+    times[i] -= constants.EPOCH
+
+# Create plot
 pos = np.array(pos)
 fig = plt.figure()
-plt.semilogy(times, accs_jup, "k")
-plt.semilogy(times, accs_cal, "r")
+plt.semilogy(times, accs_jup, "r")
+plt.semilogy(times, accs_cal, "k")
 # plt.plot(pos[:,0], pos[:,1])
+plt.xlabel(r"Time (s)")
+plt.ylabel(r"log(acceleration contribution magnitude)")
+plt.xlim(0, 3.5e7)
+plt.legend(["Jupiter", "Callisto"])
+plt.title(r"Timeseries of Orbiter Acceleration Contributions from Jupiter and Callisto for $\delta = 0.0895$ and "
+          r"$\phi = 0.440$")
 plt.show()
-
-
-
