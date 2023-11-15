@@ -12,8 +12,8 @@ initial_Jdist = 1000 * constants.R_JUPITER
 jupiter = Particle.Particle(name="Jupiter", mu=constants.MU_JUPITER)
 
 # Model orbiter for each delta-phi combination
-phi = 0.0895
-delta = 0.440
+phi = 0.0833
+delta = 0.778
 
 # Initialise Callisto
 cal = bodies.get_callisto()
@@ -69,6 +69,6 @@ plt.xlabel(r"Time (s)")
 plt.ylabel(r"log(acceleration contribution magnitude)")
 plt.xlim(0, 3.5e7)
 plt.legend(["Jupiter", "Callisto"])
-plt.title(r"Timeseries of Orbiter Acceleration Contributions from Jupiter and Callisto for $\delta = 0.0895$ and "
-          r"$\phi = 0.440$")
+plt.title(r"Timeseries of Orbiter Acceleration Contributions from Jupiter and Callisto for $\delta = 0.0833$ and "
+          r"$\phi = 0.778$")
 plt.show()
