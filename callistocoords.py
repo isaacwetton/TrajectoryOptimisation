@@ -36,8 +36,6 @@ cal_pos = cal(T)[0:3]
 closest_approach = np.linalg.norm(cal_pos - orbiter.position)
 
 times = []
-accs_jup = []
-accs_cal = []
 pos = []
 
 Jdist = 1000 * constants.R_JUPITER
@@ -47,20 +45,19 @@ while Jdist <= initial_Jdist:
     orbiter.update_eulerCromer(deltaT)
     T += deltaT
     Jdist = np.linalg.norm(orbiter.position - jupiter.position)
-    cal_pos = cal(T)[0:3]
+    cal_state = cal(T)
     cal_dist = np.linalg.norm(cal_pos - orbiter.position)
-    acc_cal = constants.MU_CALLISTO / (cal_dist ** 2)
-    times.append(T)
-    accs_cal.append(acc_cal)
-    accs_jup.append(np.linalg.norm(orbiter.acceleration))
-    pos.append(orbiter.position[:2])
-    # BREAK IF ENTERING CALLISTO SOI & OUTPUT R
-    if acc_cal > np.linalg.norm(orbiter.acceleration):
-        print("r_c = " + str(cal_dist))
-        # Calculate Callisto-centric velocity
-        v_c = orbiter.velocity - cal(T)[3:6]
-        print(np.linalg.norm(v_c))
-        break
+
+
+    # Coordinates in callisto-centred rotating frame
+    x = cal_state[3:6] / np.linalg.norm(cal_state[3:6])
+    y = - (cal_state[0:3] / np.linalg.norm(cal_state[0:3]))
+    z = np.cross(x, y)
+    orb_pos = orbiter.position[:3] - cal_state[0:3]
+    if Jdist < 1000 * constants.R_JUPITER:
+        pos.append(np.array([orb_pos.dot(x), orb_pos.dot(y), orb_pos.dot(z)]))
+        times.append(T)
+
 # Set starting time to zero
 for i in range(0, len(times)):
     times[i] -= constants.EPOCH
@@ -68,13 +65,12 @@ for i in range(0, len(times)):
 # Create plot
 pos = np.array(pos)
 fig = plt.figure()
-plt.semilogy(times, accs_jup, "r")
-plt.semilogy(times, accs_cal, "k")
-# plt.plot(pos[:,0], pos[:,1])
-plt.xlabel(r"Time (s)")
-plt.ylabel(r"log(acceleration contribution magnitude)")
-plt.xlim(0, 3.5e7)
-plt.legend(["Jupiter", "Callisto"])
-plt.title(r"Timeseries of Orbiter Acceleration Contributions from Jupiter and Callisto for $\delta = 0.778$ and "
-          r"$\phi = 0.0833$")
+# plt.semilogy(times, accs_jup, "r")
+# plt.semilogy(times, accs_cal, "k")
+plt.plot(pos[:,0], pos[:,1])
+plt.xlabel(r"x (km)")
+plt.ylabel(r"y (km)")
+# plt.xlim(0, 3.5e7)
+# plt.legend(["Jupiter", "Callisto"])
+plt.title(r"Orbiter trajectory in the Callisto-centred rotating coordinate frame for $\delta = 0.778$, $\phi = 0.0833$")
 plt.show()
