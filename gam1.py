@@ -1,4 +1,5 @@
 import constants
+from matplotlib import patches
 import numpy as np
 import bodies
 from sim import Particle
@@ -66,6 +67,8 @@ while Jdist <= initial_Jdist:
         print(np.linalg.norm(v_c))
         break
 
+
+
 # Evolve until exiting Callisto's SOI
 callisto = Particle.Particle(name="Callisto", mu=constants.MU_CALLISTO)
 cal_state = cal(T)
@@ -73,6 +76,7 @@ callisto.position = cal_state[0:3]
 callisto.velocity = cal_state[3:6]
 acc_jup = np.linalg.norm(orbiter.acceleration)
 orbiter.acceleration = orbiter.updateGravitationalAcceleration(callisto)
+T_close = 0
 while acc_cal > acc_jup:
     deltaT = 20
     orbiter.update_eulerCromer(deltaT)
@@ -85,6 +89,14 @@ while acc_cal > acc_jup:
     acc_jup = np.linalg.norm(orbiter.updateGravitationalAcceleration(jupiter))
     times.append(T)
     pos.append(orbiter.position[:2])
+    if np.linalg.norm(orbiter.position - callisto.position) < closest_approach:
+        closest_approach = np.linalg.norm(orbiter.position - callisto.position)
+        T_close = T
+
+# Output r and v
+print("Radius = " + str(np.linalg.norm(orbiter.position - jupiter.position)) + " km")
+print("Velocity = " + str(np.linalg.norm(orbiter.velocity)) + " km/s")
+print("Callisto position vector at closest approach: " + str(cal(T_close)[0:3]) + " km")
 
 # Evolve further
 orbiter.acceleration = orbiter.updateGravitationalAcceleration(jupiter)
