@@ -57,3 +57,6 @@ def constrain_angle_0_360(theta: float) -> float:
         return np.remainder(theta, 2*np.pi)
     else:
         return theta
+
+def semimajor(r, v, mu):
+    return 1/((2/r) - (v ** 2/ mu))
