@@ -2,7 +2,7 @@ import pickle
 from matplotlib import pyplot as plt
 
 # Load data
-f = open("data/gam2data3.dat", "rb")
+f = open("data/gam2data6.dat", "rb")
 phis, bests, finals = pickle.load(f)
 f.close()
 

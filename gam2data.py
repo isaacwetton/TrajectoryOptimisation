@@ -11,7 +11,7 @@ initial_Jdist = 1000 * constants.R_JUPITER
 
 # Define delta & phis
 delta = 0.778
-phis = np.linspace(0.0525, 0.0725, 100)
+phis = np.linspace(0.0637, 0.0638, 100)
 
 # Define lists to store results
 bests = []
@@ -108,6 +108,6 @@ for phi in phis:
     print(best)
 
 # Save data
-f = open("data/gam2data4.dat", "wb")
+f = open("data/gam2data6.dat", "wb")
 pickle.dump((phis, bests, finals), f, True)
 f.close()
