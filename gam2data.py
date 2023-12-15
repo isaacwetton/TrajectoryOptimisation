@@ -80,15 +80,7 @@ for phi in phis:
         # Update moon parameters
         for i in range(4):
             moon_states[i] = moons[i](T)
-
-        moon_obj = [
-            Particle.Particle(name="Io", mu=constants.MU_IO, position=np.array(moon_states[0][0:3], dtype=float)),
-            Particle.Particle(name="Europa", mu=constants.MU_EUROPA,
-                              position=np.array(moon_states[1][0:3], dtype=float)),
-            Particle.Particle(name="Ganymede", mu=constants.MU_GANYMEDE,
-                              position=np.array(moon_states[2][0:3], dtype=float)),
-            Particle.Particle(name="Callisto", mu=constants.MU_CALLISTO,
-                              position=np.array(moon_states[3][0:3], dtype=float))]
+            moon_obj[i].position = np.array(moon_states[i][0:3], dtype=float)
 
     # Continue evolution if capture is accomplished
     if best > 0:
@@ -118,16 +110,8 @@ for phi in phis:
             # Update moon parameters
             for i in range(4):
                 moon_states[i] = moons[i](T)
+                moon_obj[i].position = np.array(moon_states[i][0:3], dtype=float)
 
-            moon_obj = [
-                Particle.Particle(name="Io", mu=constants.MU_IO,
-                                  position=np.array(moon_states[0][0:3], dtype=float)),
-                Particle.Particle(name="Europa", mu=constants.MU_EUROPA,
-                                  position=np.array(moon_states[1][0:3], dtype=float)),
-                Particle.Particle(name="Ganymede", mu=constants.MU_GANYMEDE,
-                                  position=np.array(moon_states[2][0:3], dtype=float)),
-                Particle.Particle(name="Callisto", mu=constants.MU_CALLISTO,
-                                  position=np.array(moon_states[3][0:3], dtype=float))]
 
     # Append best semi-major axis to semi-majors
     bests.append(best)
