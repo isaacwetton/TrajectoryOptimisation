@@ -16,8 +16,11 @@ MJD_SIZE = 62502 - 59215
 for attempt in range(1):
     # Randomly define initial conditions
     delta = np.random.uniform(low=0, high=2*np.pi)
+    delta0 = delta
     phi = np.random.uniform(low=-0.1, high=0.1)
+    phi0 = phi
     MJD = np.random.uniform(low=59215, high=62502)
+    MJD0 = MJD
     T0 = MJD * constants.DAY_IN_SECONDS
 
     # Set temperature for simulated annealing and variable for best result
@@ -121,27 +124,32 @@ for attempt in range(1):
                     moon_obj[i].position = np.array(moon_states[i][0:3], dtype=float)
 
         # Update temperature and best result
-        if current_best > best[0]:
+        if (best[0] < 0 and current_best > best[0]) or best[0] > current_best > 0:
             best = (current_best, delta, phi, T0)
-            if temp < 1:
-                temp += 0.02
+            temp += 0.05
+            delta0 = delta
+            phi0 = phi
+            MJD0 = MJD
         else:
-            temp -= 0.02
+            temp -= 0.005
+
+        if temp > 1:
+            temp = 1
+
+        # Print the found semi-major axis
+        # print(current_best)
 
         # Randomly determine new initial conditions
-        delta0 = delta
-        delta += np.random.uniform(low=-DELTA_SIZE * temp, high=DELTA_SIZE * temp)
+        delta = delta0 + np.random.uniform(low=-DELTA_SIZE * temp, high=DELTA_SIZE * temp)
         while not 0 <= delta <= 2*np.pi:
             delta = delta0 + np.random.uniform(low=-DELTA_SIZE * temp, high=DELTA_SIZE * temp)
 
-        phi0 = phi
-        phi += np.random.uniform(low=-PHI_SIZE * temp, high=PHI_SIZE * temp)
+        phi = phi0 + np.random.uniform(low=-PHI_SIZE * temp, high=PHI_SIZE * temp)
         while not -0.1 <= phi <= 0.1:
-            phi = phi0 + np.random.uniform(low=-PHI_SIZE * temp, high=DELTA_SIZE * temp)
+            phi = phi0 + np.random.uniform(low=-PHI_SIZE * temp, high=PHI_SIZE * temp)
 
-        MJD0 = MJD
-        MJD += np.random.uniform(low=-MJD_SIZE * temp, high=MJD_SIZE * temp)
-        while not 62502 <= phi <= 59215:
+        MJD = MJD0 + np.random.uniform(low=-MJD_SIZE * temp, high=MJD_SIZE * temp)
+        while not 59215 <= MJD <= 62502:
             MJD = MJD0 + np.random.uniform(low=-MJD_SIZE * temp, high=MJD_SIZE * temp)
         T0 = MJD * constants.DAY_IN_SECONDS
 
