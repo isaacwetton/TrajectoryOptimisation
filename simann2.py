@@ -14,17 +14,25 @@ PHI_SIZE = 0.01
 MJD_SIZE = 17
 
 for attempt in range(1):
-    # Randomly define initial conditions
-    delta = np.random.uniform(low=0, high=2*np.pi)
+    # # Randomly define initial conditions
+    # delta = np.random.uniform(low=0, high=2*np.pi)
+    # delta0 = delta
+    # phi = np.random.uniform(low=-0.005, high=0.005)
+    # phi0 = phi
+    # MJD = np.random.uniform(low=59215, high=59232)
+    # MJD0 = MJD
+    # T0 = MJD * constants.DAY_IN_SECONDS
+
+    # Manually define initial conditions
+    delta = 4.745463198561653
     delta0 = delta
-    phi = np.random.uniform(low=-0.005, high=0.005)
+    phi = -0.002672414325823786
     phi0 = phi
-    MJD = np.random.uniform(low=59215, high=59232)
-    MJD0 = MJD
-    T0 = MJD * constants.DAY_IN_SECONDS
+    T0 = 5118124320.99155
+    MJD0 = T0 / constants.DAY_IN_SECONDS
 
     # Set temperature for simulated annealing and variable for best result
-    temp = 1
+    temp = 0.1
     best = (-1e10, 0, 0, 0)  # semi-major axis, delta, phi, T0
 
     # Initialise Jupiter
@@ -126,15 +134,15 @@ for attempt in range(1):
         # Update temperature and best result
         if (best[0] < 0 and current_best > best[0]) or best[0] > current_best > 0:
             best = (current_best, delta, phi, T0)
-            temp += 0.1
+            temp += 0.05
             delta0 = delta
             phi0 = phi
             MJD0 = MJD
         else:
             temp -= 0.002
 
-        if temp > 1:
-            temp = 1
+        if temp > 0.1:
+            temp = 0.1
 
         # Print the found semi-major axis
         # print(current_best)
