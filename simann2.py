@@ -12,24 +12,28 @@ initial_Jdist = 1000 * constants.R_JUPITER
 DELTA_SIZE = 2*np.pi
 PHI_SIZE = 0.01
 MJD_SIZE = 17
+run = 0
 
 for attempt in range(1):
-    # # Randomly define initial conditions
-    # delta = np.random.uniform(low=0, high=2*np.pi)
-    # delta0 = delta
-    # phi = np.random.uniform(low=-0.005, high=0.005)
-    # phi0 = phi
-    # MJD = np.random.uniform(low=59215, high=59232)
-    # MJD0 = MJD
-    # T0 = MJD * constants.DAY_IN_SECONDS
-
-    # Manually define initial conditions
-    delta = 4.745463198561653
-    delta0 = delta
-    phi = -0.002672414325823786
-    phi0 = phi
-    T0 = 5118124320.99155
-    MJD0 = T0 / constants.DAY_IN_SECONDS
+    run += 1
+    if run != 1:
+        # Randomly define initial conditions
+        delta = np.random.uniform(low=0, high=2*np.pi)
+        delta0 = delta
+        phi = np.random.uniform(low=-0.005, high=0.005)
+        phi0 = phi
+        MJD = np.random.uniform(low=59215, high=59232)
+        MJD0 = MJD
+        T0 = MJD * constants.DAY_IN_SECONDS
+    if run == 1:
+        # Manually define initial conditions
+        delta = 4.745463198561653
+        delta0 = delta
+        phi = -0.002672414325823786
+        phi0 = phi
+        T0 = 5118124320.99155
+        MJD0 = T0 / constants.DAY_IN_SECONDS
+        MJD = MJD0
 
     # Set temperature for simulated annealing and variable for best result
     temp = 0.1
