@@ -43,7 +43,8 @@ def simann(func, increase, decrease, target, temp, *spaces):
 
     return best, vals0
 
-def montecarlo(func, target, sols_no, *spaces):
+
+def montecarlo(func, target, sols_no, multistages, *spaces):
     # List of variables for function
     vals = [None] * len(spaces)
 
@@ -73,5 +74,29 @@ def montecarlo(func, target, sols_no, *spaces):
         elif abs(result - target) < abs(best - target):
             best = result
             values = solution
+
+    # Multistage steps
+    space_reduction = 1
+    for multistage in range(multistages):
+        # Reduce search space
+        space_reduction *= 0.1
+        # Define new set of sample points
+        sols = []
+        for solution in range(sols_no):
+            sol_vals = vals.copy()
+            for i in range(0, len(vals)):
+                sol_vals[i] = np.random.uniform(low=values[i] - space_sizes[i] * space_reduction,
+                                                high=values[i] + space_sizes[i] * space_reduction)
+            sols.append(sol_vals)
+
+        # Test solutions and output result
+        for solution in sols:
+            result = func(*solution)
+            if best is None:
+                best = result
+                values = solution
+            elif abs(result - target) < abs(best - target):
+                best = result
+                values = solution
 
     return best, values
