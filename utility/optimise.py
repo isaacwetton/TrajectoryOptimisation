@@ -22,7 +22,7 @@ def simann(func, increase, decrease, target, temp, *spaces):
     while temp > 0:
         # Test new values and adjust temperature accordingly
         result = func(*vals)
-        if best == None:
+        if best is None:
             best = result
         elif abs(result - target) < abs(best - target):
             best = result
@@ -42,3 +42,36 @@ def simann(func, increase, decrease, target, temp, *spaces):
                 vals[i] = vals0[i] + np.random.uniform(low=-space_sizes[i] * temp, high=space_sizes[i] * temp)
 
     return best, vals0
+
+def montecarlo(func, target, sols_no, *spaces):
+    # List of variables for function
+    vals = [None] * len(spaces)
+
+    # Space sizes
+    space_sizes = [None] * len(spaces)
+    for i in range(0, len(spaces)):
+        space_sizes[i] = spaces[i][1] - spaces[i][0]
+
+    # Create set of feasible solutions
+    sols = []
+    for solution in range(sols_no):
+        sol_vals = vals.copy()
+        for i in range(0, len(vals)):
+            sol_vals[i] = np.random.uniform(low=spaces[i][0], high=spaces[i][1])
+        sols.append(sol_vals)
+
+    # Create variable for tracking of best result
+    best = None
+    values = None
+
+    # Test solutions and output result
+    for solution in sols:
+        result = func(*solution)
+        if best is None:
+            best = result
+            values = solution
+        elif abs(result - target) < abs(best - target):
+            best = result
+            values = solution
+
+    return best, values
