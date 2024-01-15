@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def simann(func, increase, decrease, target, temp=1.0, *spaces):
+def simann(func, increase, decrease, target, temp, *spaces):
     # List of variables for function
     vals = [None] * len(spaces)
 
@@ -13,7 +13,7 @@ def simann(func, increase, decrease, target, temp=1.0, *spaces):
     # Set initial values
     for i in range(0, len(vals)):
         vals[i] = np.random.uniform(low=spaces[i][0], high=spaces[i][1])
-    vals0 = vals
+    vals0 = vals.copy()
 
     # Create variable for tracking of best result
     best = None
@@ -21,13 +21,14 @@ def simann(func, increase, decrease, target, temp=1.0, *spaces):
     # Run optimisation until temperature reaches zero
     while temp > 0:
         # Test new values and adjust temperature accordingly
-        result = func(vals)
+        result = func(*vals)
         if best == None:
             best = result
         elif abs(result - target) < abs(best - target):
             best = result
             temp += increase
-            vals0 = vals
+            vals0 = vals.copy()
+
         else:
             temp -= decrease
 
@@ -37,4 +38,4 @@ def simann(func, increase, decrease, target, temp=1.0, *spaces):
             while not spaces[i][0] <= vals[i] <= spaces[i][1]:
                 vals[i] = vals0[i] + np.random.uniform(low=-space_sizes[i] * temp, high=space_sizes[i] * temp)
 
-    return best, vals
+    return best, vals0
