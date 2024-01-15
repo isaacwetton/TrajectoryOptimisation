@@ -32,6 +32,9 @@ def simann(func, increase, decrease, target, temp, *spaces):
         else:
             temp -= decrease
 
+        if temp > 1.0:
+            temp = 1.0
+
         # Define new values
         for i in range(0, len(vals)):
             vals[i] = vals0[i] + np.random.uniform(low=-space_sizes[i] * temp, high=space_sizes[i] * temp)
