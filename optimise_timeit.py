@@ -8,7 +8,7 @@ def quadratic(x):
 """
 
 simann = "result, vals = optimise.simann(quadratic, 0.1, 0.00001, 0.0, 1.0, (-5.0, 5.0))"
-monte = "result, vals = optimise.montecarlo(quadratic, 0, 100000, 1, (-5.0, 5.0))"
+monte = "result, vals = optimise.montecarlo(quadratic, 0, 100000, 10, (-5.0, 5.0))"
 monte_lhs = "result, vals = optimise.monte_lhs(quadratic, 0, 100000, 1, (-5.0, 5.0))"
 
 t_simann = timeit(simann, setup=setup, number=10)
