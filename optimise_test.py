@@ -14,6 +14,12 @@ print("This was found using x = " + str(vals[0]))
 
 # Run Monte Carlo on function
 print("\nTest of Monte Carlo:")
-result, vals = optimise.montecarlo(quadratic, 0, 100000, 10, (-5.0, 5.0))
+result, vals = optimise.montecarlo(quadratic, 0, 100000, 1, (-5.0, 5.0))
+print("The best result was " + str(result))
+print("This was found using x = " + str(vals[0]))
+
+# Run Monte Carlo on function
+print("\nTest of Monte Carlo with LHS:")
+result, vals = optimise.monte_lhs(quadratic, 0, 100000, 1, (-5.0, 5.0))
 print("The best result was " + str(result))
 print("This was found using x = " + str(vals[0]))

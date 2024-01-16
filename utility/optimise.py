@@ -100,3 +100,68 @@ def montecarlo(func, target, sols_no, multistages, *spaces):
                 values = solution
 
     return best, values
+
+
+def monte_lhs(func, target, sols_no, multistages, *spaces):
+    var_no = len(spaces)
+
+    # Space sizes
+    space_sizes = [None] * var_no
+    for i in range(0, len(spaces)):
+        space_sizes[i] = spaces[i][1] - spaces[i][0]
+
+    # Create set of feasible variable values
+    pos_val = [None] * var_no
+    for i in range(var_no):
+        pos_val[i] = np.linspace(spaces[i][0], spaces[i][1], sols_no)
+
+    # Create set of possible solutions
+    sols = []
+    for i in range(sols_no):
+        sol_vals = [None] * var_no
+        for j in range(0, var_no):
+            k = np.random.randint(0, len(pos_val[j]))
+            sol_vals[j] = pos_val[j][k]
+            temp = np.delete(pos_val[j], k)
+            pos_val[j] = temp
+        sols.append(sol_vals)
+
+    # Create variable for tracking of best result
+    best = None
+    values = None
+
+    # Test solutions and output result
+    for solution in sols:
+        result = func(*solution)
+        if best is None:
+            best = result
+            values = solution
+        elif abs(result - target) < abs(best - target):
+            best = result
+            values = solution
+
+    # # Multistage steps
+    # space_reduction = 1
+    # for multistage in range(multistages):
+    #     # Reduce search space
+    #     space_reduction *= 0.1
+    #     # Define new set of sample points
+    #     sols = []
+    #     for solution in range(sols_no):
+    #         sol_vals = vals.copy()
+    #         for i in range(0, len(vals)):
+    #             sol_vals[i] = np.random.uniform(low=values[i] - space_sizes[i] * space_reduction,
+    #                                             high=values[i] + space_sizes[i] * space_reduction)
+    #         sols.append(sol_vals)
+    #
+    #     # Test solutions and output result
+    #     for solution in sols:
+    #         result = func(*solution)
+    #         if best is None:
+    #             best = result
+    #             values = solution
+    #         elif abs(result - target) < abs(best - target):
+    #             best = result
+    #             values = solution
+
+    return best, values
