@@ -223,23 +223,24 @@ def find_semimajor(delta, phi, MJD):
     return util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity), constants.MU_JUPITER)
 """
 
-simann_decs = [0.1, 0.075, 0.05, 0.025, 0.02, 0.01]
-simann_times = []
-simann_errors = []
+monte_sols = [20, 50, 75, 100, 150, 200]
+monte_times = []
+monte_errors = []
 
-for i in range(len(simann_decs)):
-    t_simann = timeit("result, vals = optimise.simann(find_semimajor, 0.1, " + str(simann_decs[i]) + ", 1880000.0, 1.0, (0, 2*np.pi), (-0.005, 0.005), (59215, 59232))",
-                      setup=setup, number=tests)
-    simann_times.append(t_simann / tests)
+for i in range(len(monte_sols)):
+    t_monte = timeit(
+        "result, vals = optimise.montecarlo(find_semimajor, 1880000, " + str(monte_sols[i]) + ", 10, (0, 2*np.pi), (-0.005, 0.005), (59215, 59232))",
+        setup=setup, number=tests)
+    monte_times.append(t_monte / tests)
     errors = 0
     for j in range(tests):
-        result, vals = optimise.simann(find_semimajor, 0.1, simann_decs[i], 1880000.0, 1.0, (0, 2*np.pi), (-0.005, 0.005), (59215, 59232))
+        result, vals = optimise.montecarlo(find_semimajor, 1880000, int(monte_sols[i]), 1, (0, 2*np.pi), (-0.005, 0.005), (59215, 59232))
         print(vals)
         print(result)
         errors += abs(result)
-    simann_errors.append(errors / tests)
+    monte_errors.append(errors / tests)
 
-# Save simann data
-f = open("data/timeit3simann.dat", "wb")
-pickle.dump((simann_decs, simann_errors, simann_times), f, True)
+# Save monte data
+f = open("data/timeit4monte.dat", "wb")
+pickle.dump((monte_sols, monte_errors, monte_times), f, True)
 f.close()
