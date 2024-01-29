@@ -229,12 +229,12 @@ monte_errors = []
 
 for i in range(len(monte_sols)):
     t_monte = timeit(
-        "result, vals = optimise.montecarlo(find_semimajor, 1880000, " + str(monte_sols[i]) + ", 10, (0, 2*np.pi), (-0.005, 0.005), (59215, 59232))",
+        "result, vals = optimise.montecarlo(find_semimajor, 1880000, " + str(monte_sols[i]) + ", 0, (0, 2*np.pi), (-0.005, 0.005), (59215, 59232))",
         setup=setup, number=tests)
     monte_times.append(t_monte / tests)
     errors = 0
     for j in range(tests):
-        result, vals = optimise.montecarlo(find_semimajor, 1880000, int(monte_sols[i]), 1, (0, 2*np.pi), (-0.005, 0.005), (59215, 59232))
+        result, vals = optimise.montecarlo(find_semimajor, 1880000, int(monte_sols[i]), 0, (0, 2*np.pi), (-0.005, 0.005), (59215, 59232))
         print(vals)
         print(result)
         errors += abs(result)
