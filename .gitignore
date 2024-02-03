@@ -1,6 +1,9 @@
 # idea
 .idea/
 
+# .dat files as they were getting too large
+data
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
