@@ -1,6 +1,4 @@
-from timeit import timeit
 import optimise
-import pickle
 import numpy as np
 import constants
 from sim import Particle
@@ -48,6 +46,9 @@ def find_semimajor(delta, phi, MJD):
                 Particle.Particle(name="Callisto", mu=constants.MU_CALLISTO,
                                   position=np.array(moon_states[3][0:3], dtype=float))]
 
+    # Define moon radii
+    moon_radii = [constants.R_IO, constants.R_EUROPA, constants.R_GANYMEDE, constants.R_CALLISTO]
+
     # Set initial Jupiter distance
     Jdist = initial_Jdist
 
@@ -81,6 +82,15 @@ def find_semimajor(delta, phi, MJD):
             moon_states[i] = moons[i](T)
             moon_obj[i].position = np.array(moon_states[i][0:3], dtype=float)
 
+        # Return poor result if collision with Jupiter
+        if np.linalg.norm(orbiter.position - jupiter.position) < 2 * constants.R_JUPITER:
+            return -1e9
+
+        # Return poor result if collision with moon
+        for i in range(4):
+            if np.linalg.norm(orbiter.position - moon_obj[i].position) < 50 + moon_radii[i]:
+                return -1e9
+
     # Continue evolution if capture is accomplished
     if current_best > 0:
         print("capture")
@@ -110,6 +120,15 @@ def find_semimajor(delta, phi, MJD):
             for i in range(4):
                 moon_states[i] = moons[i](T)
                 moon_obj[i].position = np.array(moon_states[i][0:3], dtype=float)
+
+            # Return poor result if collision with Jupiter
+            if np.linalg.norm(orbiter.position - jupiter.position) < 2 * constants.R_JUPITER:
+                return -1e9
+
+            # Return poor result if collision with moon
+            for i in range(4):
+                if np.linalg.norm(orbiter.position - moon_obj[i].position) < 50 + moon_radii[i]:
+                    return -1e9
 
     return util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity), constants.MU_JUPITER)
 
