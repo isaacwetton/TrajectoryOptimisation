@@ -10,8 +10,8 @@ import util
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Define delta & phis
-delta = 1.3516631280959193
-phi = -0.0016230317667650473
+delta = 2.691475374211932
+phi = 0.029750395185483797
 
 # Define lists to store results
 orbpos = []
@@ -37,7 +37,7 @@ initvel = np.array([3.4 * np.cos(vel_angle), 3.4 * np.sin(vel_angle), 0], dtype=
 orbiter = Particle.Particle(position=initpos, velocity=initvel, name="Orbiter", mu=2000.0 * G)
 
 # Initial time
-T = 59228.79551384522 * constants.DAY_IN_SECONDS
+T = 59229.348226893635 * constants.DAY_IN_SECONDS
 
 # Initialise Galilean Moon Objects
 moons = [bodies.get_io(), bodies.get_europa(), bodies.get_ganymede(), bodies.get_callisto()]
@@ -140,6 +140,6 @@ print(util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.ve
 print(best)
 
 # Save data
-f = open("data/gam5data2.dat", "wb")
+f = open("data/gam5data3.dat", "wb")
 pickle.dump((orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times), f, True)
 f.close()

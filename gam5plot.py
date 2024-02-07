@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 # Load data
-f = open("data/gam5data2.dat", "rb")
+f = open("data/gam5data3.dat", "rb")
 orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times = pickle.load(f)
 f.close()
 
@@ -49,7 +49,7 @@ plt.scatter(0, 0, c="k")
 plt.legend(["Orbiter", "Callisto", "Ganymede", "Io", "Europa"])
 
 plt.title("Orbiter trajectory shown in the XY plane for initial conditions\n"
-          r"$\delta = 1.352$, $\phi = -0.001623$, MJD = 59229")
+          r"$\delta = 2.691$, $\phi = 0.02975$, MJD = 59229.3")
 plt.xlabel(r"X position (km)")
 plt.ylabel("Y position (km)")
 plt.show()

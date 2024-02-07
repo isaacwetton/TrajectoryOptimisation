@@ -8,7 +8,7 @@ from scipy.constants import G
 
 
 def find_semimajor(delta, phi, MJD):
-    if -0.001 < phi < 0.001:
+    if -0.02 < phi < 0.02:
         return -1e9
 
     T0 = MJD * constants.DAY_IN_SECONDS
@@ -130,9 +130,14 @@ def find_semimajor(delta, phi, MJD):
                 if np.linalg.norm(orbiter.position - moon_obj[i].position) < 50 + moon_radii[i]:
                     return -1e9
 
-    return util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity), constants.MU_JUPITER)
+    # Only consider positive semi-major axes
+    semimajor = util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity), constants.MU_JUPITER)
+    if semimajor > 0:
+        return semimajor
+    else:
+        return -1e9
 
 
-result, vals = optimise.simann(find_semimajor, 0.1, 0.005, 1880000.0, 1.0, (0, 2*np.pi), (-0.02, 0.02), (59215, 59232))
+result, vals = optimise.simann(find_semimajor, 0.2, 0.0025, 1880000.0, 1.0, (0, 2*np.pi), (-0.075, 0.075), (59215, 59232))
 print(vals)
 print(result)
