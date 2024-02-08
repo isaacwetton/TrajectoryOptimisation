@@ -51,9 +51,8 @@ def find_semimajor(delta, phi, MJD):
     Jdist = initial_Jdist
 
     # Evolve
-    current_best = util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity),
-                                  constants.MU_JUPITER)
-    while Jdist <= initial_Jdist and current_best < 0:
+    closest_jup = initial_Jdist
+    while Jdist <= initial_Jdist:
         # Calculate acceleration
         orbiter.acceleration = orbiter.updateGravitationalAcceleration(jupiter)
         orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[0])
@@ -70,12 +69,6 @@ def find_semimajor(delta, phi, MJD):
         T += deltaT
         orbiter.update_eulerCromer(deltaT)
         Jdist = np.linalg.norm(orbiter.position - jupiter.position)
-
-        # Determine whether semi-major axis is better
-        if current_best < util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity),
-                                         constants.MU_JUPITER):
-            current_best = util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity),
-                                          constants.MU_JUPITER)
 
         # Update moon parameters
         moon_states = [moons[0](T), moons[1](T), moons[2](T), moons[3](T)]
@@ -98,53 +91,11 @@ def find_semimajor(delta, phi, MJD):
         elif np.linalg.norm(orbiter.position - moon_obj[3].position) < 50 + moon_radii[3]:
             return -1e9
 
-    # Continue evolution if capture is accomplished
-    if current_best > 0:
-        print("capture")
-        for x in range(10000):
-            # Calculate acceleration
-            orbiter.acceleration = orbiter.updateGravitationalAcceleration(jupiter)
-            orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[0])
-            orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[1])
-            orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[2])
-            orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[3])
-
-            # Evolve with timestep depending on Jupiter distance
-            if Jdist > 30 * constants.R_JUPITER:
-                deltaT = 50
-            else:
-                deltaT = 1
-
-            T += deltaT
-            orbiter.update_eulerCromer(deltaT)
-            Jdist = np.linalg.norm(orbiter.position - jupiter.position)
-
-            # Determine whether semi-major axis is better
-            if current_best < util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity),
-                                             constants.MU_JUPITER):
-                current_best = util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity),
-                                              constants.MU_JUPITER)
-
-            # Update moon parameters
-            moon_states = [moons[0](T), moons[1](T), moons[2](T), moons[3](T)]
-            moon_obj[0].position = np.array(moon_states[0][0:3], dtype=float)
-            moon_obj[1].position = np.array(moon_states[1][0:3], dtype=float)
-            moon_obj[2].position = np.array(moon_states[2][0:3], dtype=float)
-            moon_obj[3].position = np.array(moon_states[3][0:3], dtype=float)
-
-            # Return poor result if collision with Jupiter
-            if np.linalg.norm(orbiter.position - jupiter.position) < 2 * constants.R_JUPITER:
-                return -1e9
-
-            # Return poor result if collision with moon
-            if np.linalg.norm(orbiter.position - moon_obj[0].position) < 50 + moon_radii[0]:
-                return -1e9
-            elif np.linalg.norm(orbiter.position - moon_obj[1].position) < 50 + moon_radii[1]:
-                return -1e9
-            elif np.linalg.norm(orbiter.position - moon_obj[2].position) < 50 + moon_radii[2]:
-                return -1e9
-            elif np.linalg.norm(orbiter.position - moon_obj[3].position) < 50 + moon_radii[3]:
-                return -1e9
+        # Update closest Jupiter approach and break if leaving 30 Jupiter radii
+        if closest_jup > Jdist:
+            Jdist = closest_jup
+        elif Jdist > closest_jup + 30 * constants.R_JUPITER:
+            break
 
     # Return positive semi-major axis or modified negative semi-major axis
     # If semi-major axis is >1e9, it is likely negative: subtract 1e9 and invert sign to retrieve
