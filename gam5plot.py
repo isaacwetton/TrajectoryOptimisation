@@ -40,13 +40,13 @@ for pos in iopos:
     ioypos.append(pos[1])
 
 # Create plot
-plt.plot(orbxpos, orbypos, "k")
 plt.plot(calxpos, calypos, "red")
 plt.plot(ganxpos, ganypos, "blue")
 plt.plot(ioxpos, ioypos, "green")
 plt.plot(eurxpos, eurypos, "yellow")
+plt.plot(orbxpos, orbypos, "orange")
 plt.scatter(0, 0, c="k")
-plt.legend(["Orbiter", "Callisto", "Ganymede", "Io", "Europa"])
+plt.legend(["Callisto", "Ganymede", "Io", "Europa", "Orbiter", "Jupiter"])
 
 plt.title("Orbiter trajectory shown in the XY plane for initial conditions\n"
           r"$\delta = 2.691$, $\phi = 0.02975$, MJD = 59229.3")

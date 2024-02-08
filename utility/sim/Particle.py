@@ -58,14 +58,12 @@ class Particle:
         :param deltaT: The time step for which to update the system
         """
         # Update velocity
-        for i in range(0, 3):
-            self.velocity[i] = self.velocity[i] + (self.acceleration[i] * deltaT)
+        self.velocity = self.velocity + (self.acceleration * deltaT)
         # Update position
-        for i in range(0, 3):
-            self.position[i] = self.position[i] + (self.velocity[i] * deltaT)
+        self.position = self.position + (self.velocity * deltaT)
         # Create copies of position and velocity arrays to ensure that all entries are floats
-        self.position = np.array([self.position[0], self.position[1], self.position[2]], dtype=float)
-        self.velocity = np.array([self.velocity[0], self.velocity[1], self.velocity[2]], dtype=float)
+        # self.position = np.array([self.position[0], self.position[1], self.position[2]], dtype=float)
+        # self.velocity = np.array([self.velocity[0], self.velocity[1], self.velocity[2]], dtype=float)
 
     def updateGravitationalAcceleration(self, body):
         """
