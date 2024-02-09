@@ -1,7 +1,7 @@
 import numpy as np
 
 
-def simann(func, increase, decrease, target, temp, *spaces):
+def simann(func, increase, decrease, target, temp, *spaces, track_evolution=False):
     # List of variables for function
     vals = [None] * len(spaces)
 
@@ -18,10 +18,19 @@ def simann(func, increase, decrease, target, temp, *spaces):
     # Create variable for tracking of best result
     best = None
 
+    # Create lists for tracking tested combinations
+    if track_evolution:
+        tested = []
+
     # Run optimisation until temperature reaches zero
     while temp > 0:
         # Test new values and adjust temperature accordingly
         result = func(*vals)
+
+        # Add values and result to tracked tests
+        if track_evolution:
+            tested.append([*vals, result])
+
         if best is None:
             best = result
         elif abs(result - target) < abs(best - target):
@@ -41,7 +50,10 @@ def simann(func, increase, decrease, target, temp, *spaces):
             while not spaces[i][0] <= vals[i] <= spaces[i][1]:
                 vals[i] = vals0[i] + np.random.uniform(low=-space_sizes[i] * temp, high=space_sizes[i] * temp)
 
-    return best, vals0
+    if not track_evolution:
+        return best, vals0
+    else:
+        return best, vals0, tested
 
 
 def montecarlo(func, target, sols_no, multistages, *spaces):

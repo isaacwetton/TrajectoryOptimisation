@@ -11,11 +11,12 @@ both = closest_cal + closest_gan
 
 # Create contour plot
 fig = plt.figure()
-contour = plt.contourf(x, y, closest_cal - constants.R_CALLISTO, 1000)
+contour = plt.contourf(x, y, both, 1000)
 cbar = plt.colorbar(contour)
-cbar.set_label("Altitude at closest approach to Callisto (km)")
+cbar.set_label("Sum of closest approaches to Callisto and Ganymede (km)")
 plt.xlabel(r"Starting position, $\delta$ (rad)")
 plt.ylabel(r"Initial velocity direction, $\phi$ (rad)")
-plt.title(r"Contour plot of closest approach altitude at Callisto (km) as a function of $\delta$ and $\phi$")
+plt.title("Contour plot of the sum of closest approaches to Callisto\nand Ganymede centres (km)"
+         r" as a function of $\delta$ and $\phi$")
 
 plt.show()

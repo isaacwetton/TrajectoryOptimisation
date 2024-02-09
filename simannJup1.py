@@ -94,7 +94,9 @@ def find_semimajor(delta, phi, MJD):
         # Update closest Jupiter approach and break if leaving 30 Jupiter radii
         if closest_jup > Jdist:
             Jdist = closest_jup
-        elif Jdist > closest_jup + 30 * constants.R_JUPITER:
+        elif Jdist > closest_jup + 10 * constants.R_JUPITER:
+            break
+        elif 10 * constants.R_JUPITER > util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity), constants.MU_JUPITER) > 0:
             break
 
     # Return positive semi-major axis or modified negative semi-major axis
