@@ -5,6 +5,7 @@ from sim import Particle
 import bodies
 import util
 from scipy.constants import G
+import pickle
 
 
 def find_semimajor(delta, phi, MJD):
@@ -108,6 +109,11 @@ def find_semimajor(delta, phi, MJD):
         return 1e9 + abs(semimajor)
 
 
-result, vals = optimise.simann(find_semimajor, 0.2, 0.0025, 1880000.0, 1.0, (0, 2*np.pi), (-0.075, 0.075), (59215, 59232))
+result, vals, tested = optimise.simann(find_semimajor, 0.1, 0.01, 1880000.0, 1.0, (4.0, 2*np.pi), (-0.1, 0.1), (59228.5, 59229.5), track_evolution=True)
 print(vals)
 print(result)
+
+# Save data
+f = open("data/simannJup1tested1.dat", "wb")
+pickle.dump(tested, f, True)
+f.close()
