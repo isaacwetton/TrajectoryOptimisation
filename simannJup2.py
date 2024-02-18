@@ -8,12 +8,12 @@ from scipy.constants import G
 import pickle
 
 
-def find_semimajor(delta, phi, MJD):
+def find_semimajor(delta, phi):
     if -0.02 < phi < 0.02:
         print("Abs(phi) too small")
         return -1e10
 
-    T0 = MJD * constants.DAY_IN_SECONDS
+    T0 = 59228.79551384522 * constants.DAY_IN_SECONDS
     initial_Jdist = 1000 * constants.R_JUPITER
 
     # Initialise Jupiter
@@ -101,7 +101,9 @@ def find_semimajor(delta, phi, MJD):
         # Update closest Jupiter approach and break if leaving 30 Jupiter radii
         if closest_jup > Jdist:
             closest_jup = Jdist
-        elif Jdist > closest_jup + 25 * constants.R_JUPITER:
+        elif Jdist > closest_jup + 10 * constants.R_JUPITER:
+            break
+        elif 10 * constants.R_JUPITER > util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity), constants.MU_JUPITER) > 0:
             break
 
     # Return positive semi-major axis or modified negative semi-major axis
@@ -114,11 +116,11 @@ def find_semimajor(delta, phi, MJD):
         return 1e9 + abs(semimajor)
 
 
-result, vals, tested = optimise.simann(find_semimajor, 0.1, 0.0025, 1880000.0, 1.0, (4.0, 2*np.pi), (-0.1, 0.1), (59228.5, 59229.5), track_evolution=True)
+result, vals, tested = optimise.simann(find_semimajor, 0.025, 0.0025, 1880000.0, 1.0, (0, 2*np.pi), (-0.2, 0.2), track_evolution=True)
 print(vals)
 print(result)
 
 # Save data
-f = open("data/simannJup1tested1.dat", "wb")
+f = open("data/simannJup2tested3.dat", "wb")
 pickle.dump(tested, f, True)
 f.close()

@@ -10,8 +10,8 @@ import util
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Define delta & phis
-delta = 2.691475374211932
-phi = 0.029750395185483797
+delta = 4.795672919096887
+phi = -0.046174926549546455
 
 # Define lists to store results
 orbpos = []
@@ -37,15 +37,13 @@ initvel = np.array([3.4 * np.cos(vel_angle), 3.4 * np.sin(vel_angle), 0], dtype=
 orbiter = Particle.Particle(position=initpos, velocity=initvel, name="Orbiter", mu=2000.0 * G)
 
 # Initial time
-T = 59229.348226893635 * constants.DAY_IN_SECONDS
+T = 59229.35162893285 * constants.DAY_IN_SECONDS
 
 # Initialise Galilean Moon Objects
 moons = [bodies.get_io(), bodies.get_europa(), bodies.get_ganymede(), bodies.get_callisto()]
 
 # Find initial moon states
-moon_states = [None] * 4
-for i in range(4):
-    moon_states[i] = moons[i](T)
+moon_states = [moons[0](T), moons[1](T), moons[2](T), moons[3](T)]
 
 moon_obj = [Particle.Particle(name="Io", mu=constants.MU_IO, position=np.array(moon_states[0][0:3], dtype=float)),
             Particle.Particle(name="Europa", mu=constants.MU_EUROPA,
@@ -63,8 +61,10 @@ best = util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.v
 while Jdist <= initial_Jdist and best < 0:
     # Calculate acceleration
     orbiter.acceleration = orbiter.updateGravitationalAcceleration(jupiter)
-    for i in range(4):
-        orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[i])
+    orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[0])
+    orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[1])
+    orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[2])
+    orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[3])
 
     # Evolve with timestep depending on Jupiter distance
     if Jdist > 50 * constants.R_JUPITER:
@@ -77,9 +77,11 @@ while Jdist <= initial_Jdist and best < 0:
     Jdist = np.linalg.norm(orbiter.position - jupiter.position)
 
     # Update moon parameters
-    for i in range(4):
-        moon_states[i] = moons[i](T)
-        moon_obj[i].position = np.array(moon_states[i][0:3], dtype=float)
+    moon_states = [moons[0](T), moons[1](T), moons[2](T), moons[3](T)]
+    moon_obj[0].position = np.array(moon_states[0][0:3], dtype=float)
+    moon_obj[1].position = np.array(moon_states[1][0:3], dtype=float)
+    moon_obj[2].position = np.array(moon_states[2][0:3], dtype=float)
+    moon_obj[3].position = np.array(moon_states[3][0:3], dtype=float)
 
     # Determine whether semi-major axis is better
     if best < util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity), constants.MU_JUPITER):
@@ -99,8 +101,10 @@ while Jdist <= initial_Jdist and best < 0:
 for i in range(1000000):
     # Calculate acceleration
     orbiter.acceleration = orbiter.updateGravitationalAcceleration(jupiter)
-    for i in range(4):
-        orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[i])
+    orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[0])
+    orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[1])
+    orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[2])
+    orbiter.acceleration += orbiter.updateGravitationalAcceleration(moon_obj[3])
 
     # Evolve with timestep depending on Jupiter distance
     if Jdist > 50 * constants.R_JUPITER:
@@ -113,9 +117,11 @@ for i in range(1000000):
     Jdist = np.linalg.norm(orbiter.position - jupiter.position)
 
     # Update moon parameters
-    for i in range(4):
-        moon_states[i] = moons[i](T)
-        moon_obj[i].position = np.array(moon_states[i][0:3], dtype=float)
+    moon_states = [moons[0](T), moons[1](T), moons[2](T), moons[3](T)]
+    moon_obj[0].position = np.array(moon_states[0][0:3], dtype=float)
+    moon_obj[1].position = np.array(moon_states[1][0:3], dtype=float)
+    moon_obj[2].position = np.array(moon_states[2][0:3], dtype=float)
+    moon_obj[3].position = np.array(moon_states[3][0:3], dtype=float)
 
     # Determine whether semi-major axis is better
     if best < util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity),
@@ -140,6 +146,7 @@ print(util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.ve
 print(best)
 
 # Save data
-f = open("data/gam5data3.dat", "wb")
+f = open("data/gam5data4.dat", "wb")
 pickle.dump((orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times), f, True)
 f.close()
+print("Done")
