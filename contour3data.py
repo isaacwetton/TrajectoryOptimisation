@@ -7,7 +7,7 @@ from scipy.constants import G
 import pickle
 
 # Create arrays of orbiter starting position and angles
-s1, s2 = 16, 20
+s1, s2 = 25, 25
 deltas = np.linspace(0, 2*np.pi, s1)
 phis = np.linspace(-0.2, 0.2, s2, endpoint=True)
 x, y = np.meshgrid(deltas, phis)
@@ -97,10 +97,15 @@ for i in range(0, len(deltas)):
             if closest_gan_track > np.linalg.norm(orbiter.position - moon_obj[2].position):
                 closest_gan_track = np.linalg.norm(orbiter.position - moon_obj[2].position)
 
-            # Update closest Jupiter approach and break if leaving 30 Jupiter radii
+            # Update closest Jupiter approach and break if leaving 5 Jupiter radii
             if closest_jup > Jdist:
                 Jdist = closest_jup
-            elif Jdist > closest_jup + 30 * constants.R_JUPITER:
+            elif Jdist > closest_jup + 1 * constants.R_JUPITER:
+                break
+            elif 0 < util.semimajor(np.linalg.norm(orbiter.velocity), np.linalg.norm(orbiter.position), constants.MU_JUPITER) < closest_jup + 5 * constants.R_JUPITER:
+                print(delta)
+                print(phi)
+                print(util.semimajor(np.linalg.norm(orbiter.velocity), np.linalg.norm(orbiter.position), constants.MU_JUPITER))
                 break
 
         # Fill in value grids for contour
@@ -110,6 +115,6 @@ for i in range(0, len(deltas)):
         print("Completed test of solution " + str(counter) + " of " + str(solutions))
 
 # Save data
-f = open("data/contour3data1.dat", "wb")
+f = open("data/contour3data2.dat", "wb")
 pickle.dump((x, y, closest_cal, closest_gan), f, True)
 f.close()
