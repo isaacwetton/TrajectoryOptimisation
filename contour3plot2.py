@@ -14,15 +14,16 @@ x *= 360 / (2*np.pi)
 y *= 360 / (2*np.pi)
 
 # Load simann test data
-f = open("data/simannJup2tested3.dat", "rb")
+f = open("data/simannJup3tested1.dat", "rb")
 pre_tested = pickle.load(f)
+print(pre_tested)
 tested = []
 for i in pre_tested:
     pre_vals = i[0:2]
     vals = []
     for j in pre_vals:
         vals.append(j*(360 / (2*np.pi)))
-    tested.append([*vals, i[2]])
+    tested.append([*vals, *i[2:]])
 f.close()
 
 # Generate lists of evolving best solutions and worse solutions

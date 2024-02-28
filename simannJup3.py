@@ -9,29 +9,29 @@ from scipy.interpolate import RegularGridInterpolator
 import pickle
 
 # Load data
-f = open("data/contour3data1.dat", "rb")
+f = open("data/contour3data2.dat", "rb")
 (x, y, closest_cal, closest_gan) = pickle.load(f)
 both = closest_cal + closest_gan
 both2 = np.matrix.transpose(both)  # Required matrix transpose???
 f.close()
 
 # Create interpolator
-s1, s2 = 16, 20
+s1, s2 = 25, 25
 deltas = np.linspace(0, 2*np.pi, s1)
 phis = np.linspace(-0.2, 0.2, s2, endpoint=True)
 interp = RegularGridInterpolator((deltas, phis), both2)
 
 
-def find_semimajor(delta, phi):
+def find_semimajor(delta, phi, MJD):
     if -0.02 < phi < 0.02:
         print("Abs(phi) too small")
         return -1e10
 
-    if interp((delta, phi)) > 0.25e7:
+    if interp((delta, phi)) > 0.25e7 and np.random.uniform(low=0.0, high=1.0) < 0.75:
         print("Poor interpolation result")
         return -1e10
 
-    T0 = 59228.79551384522 * constants.DAY_IN_SECONDS
+    T0 = MJD * constants.DAY_IN_SECONDS
     initial_Jdist = 1000 * constants.R_JUPITER
 
     # Initialise Jupiter
@@ -134,11 +134,11 @@ def find_semimajor(delta, phi):
         return 1e9 + abs(semimajor)
 
 
-result, vals, tested = optimise.simann(find_semimajor, 0.025, 0.0025, 1880000.0, 1.0, (0, 2*np.pi), (-0.2, 0.2), track_evolution=True)
+result, vals, tested = optimise.simann(find_semimajor, 0.05, 0.001, 1880000.0, 1.0, (0, 2*np.pi), (-0.2, 0.2), (59228.5, 59229.5), track_evolution=True)
 print(vals)
 print(result)
 
 # Save data
-f = open("data/simannJup2tested3.dat", "wb")
+f = open("data/simannJup3tested1.dat", "wb")
 pickle.dump(tested, f, True)
 f.close()

@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import constants
 
 # Load data
-f = open("data/gam6data1.dat", "rb")
-Jdists, vels = pickle.load(f)
+f = open("data/gam5data6.dat", "rb")
+orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, vels, Jdists = pickle.load(f)
 f.close()
 
 # Create plot
