@@ -3,6 +3,7 @@ import numpy as np
 import bodies
 from sim import Particle
 from scipy.constants import G
+from scipy.constants import g
 import pickle
 import util
 
@@ -60,6 +61,10 @@ Jdist = initial_Jdist
 
 # Evolve and record positions
 closest_jup = Jdist
+
+# Thrust applied?
+thrusted = False
+
 # while Jdist <= initial_Jdist:
 for i in range(3000000):
     # Calculate acceleration
@@ -72,6 +77,8 @@ for i in range(3000000):
     # Evolve with timestep depending on Jupiter distance
     if Jdist > 50 * constants.R_JUPITER:
         deltaT = 50
+    elif thrusted and Jdist < 10 * constants.R_JUPITER:
+        deltaT = 0.25
     else:
         deltaT = 1
 
@@ -86,6 +93,22 @@ for i in range(3000000):
     moon_obj[2].position = np.array(moon_states[2][0:3], dtype=float)
     moon_obj[3].position = np.array(moon_states[3][0:3], dtype=float)
 
+    # Apply thrust at periapsis
+    if abs(Jdist - 143421) < 1.0 and not thrusted:
+        print(np.linalg.norm(orbiter.velocity))
+        orbiter.mu -= 153.1 * G
+        delta_v = (2000 * g * np.log(2000 / (2000 - 153.1))) / 1000
+        unitvec_vel = orbiter.velocity / np.linalg.norm(orbiter.velocity)
+        delta_v_vec = delta_v * -unitvec_vel
+        orbiter.velocity += delta_v_vec
+        print(np.linalg.norm(delta_v_vec))
+        print(np.linalg.norm(orbiter.velocity))
+        thrusted = True
+
+    # Output message if Jupiter collision occurs
+    if Jdist < 2 * constants.R_JUPITER:
+        print("Invalid solution: Jupiter collision")
+
     # Append results to lists
     orbpos.append(orbiter.position)
     orbvel.append(orbiter.velocity)
@@ -97,13 +120,6 @@ for i in range(3000000):
     times.append(T)
     vels.append(np.linalg.norm(orbiter.velocity))
     Jdists.append(np.linalg.norm(orbiter.position))
-
-    # Temporary code output and exit when crossing Ganymede's path
-    if Jdist < 1070400:
-        print(T / constants.DAY_IN_SECONDS)
-        print(moon_obj[2].position)
-        print(orbiter.position)
-        exit()
 
     # If exiting range then break
     if Jdist > initial_Jdist:
@@ -165,7 +181,7 @@ print(util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.ve
 print(closest_jup)
 
 # Save data
-f = open("data/gam5data7.dat", "wb")
+f = open("data/gam7data2.dat", "wb")
 pickle.dump((orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, vels, Jdists), f, True)
 f.close()
 print("Done")

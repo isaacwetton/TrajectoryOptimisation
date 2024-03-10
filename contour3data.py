@@ -17,7 +17,7 @@ solutions = s1 * s2
 counter = 0
 
 # Define constants
-T0 = 59228.79551384522 * constants.DAY_IN_SECONDS
+T0 = 59222.05 * constants.DAY_IN_SECONDS
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Initialise Jupiter
@@ -97,15 +97,10 @@ for i in range(0, len(deltas)):
             if closest_gan_track > np.linalg.norm(orbiter.position - moon_obj[2].position):
                 closest_gan_track = np.linalg.norm(orbiter.position - moon_obj[2].position)
 
-            # Update closest Jupiter approach and break if leaving 5 Jupiter radii
+            # Update closest Jupiter approach and break after periapsis
             if closest_jup > Jdist:
-                Jdist = closest_jup
-            elif Jdist > closest_jup + 1 * constants.R_JUPITER:
-                break
-            elif 0 < util.semimajor(np.linalg.norm(orbiter.velocity), np.linalg.norm(orbiter.position), constants.MU_JUPITER) < closest_jup + 5 * constants.R_JUPITER:
-                print(delta)
-                print(phi)
-                print(util.semimajor(np.linalg.norm(orbiter.velocity), np.linalg.norm(orbiter.position), constants.MU_JUPITER))
+                closest_jup = Jdist
+            elif Jdist > closest_jup:
                 break
 
         # Fill in value grids for contour
@@ -115,6 +110,6 @@ for i in range(0, len(deltas)):
         print("Completed test of solution " + str(counter) + " of " + str(solutions))
 
 # Save data
-f = open("data/contour3data2.dat", "wb")
+f = open("data/contour3data5.dat", "wb")
 pickle.dump((x, y, closest_cal, closest_gan), f, True)
 f.close()

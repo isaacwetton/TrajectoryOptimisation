@@ -2,7 +2,7 @@ import pickle
 import constants
 
 # Load data
-f = open("data/gam5data6.dat", "rb")
+f = open("data/gam7data2.dat", "rb")
 orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, vels, Jdists = pickle.load(f)
 f.close()
 

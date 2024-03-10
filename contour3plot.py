@@ -3,7 +3,7 @@ import constants
 from matplotlib import pyplot as plt
 
 # Load data
-f = open("data/contour3data2.dat", "rb")
+f = open("data/contour3data5.dat", "rb")
 (x, y, closest_cal, closest_gan) = pickle.load(f)
 f.close()
 
@@ -22,6 +22,16 @@ plt.xlabel(r"Starting position, $\delta$ (rad)")
 plt.ylabel(r"Initial velocity direction, $\phi$ (rad)")
 plt.title("Contour plot of the sum of maximum gravitational acceleration contributions from Callisto\nand "
           r"Ganymede centres (kms$^{-2}$)"
-          r" as a function of $\delta$ and $\phi$")
+          r" as a function of $\delta$ and $\phi$ for initial time 59222.05 MJD")
+
+# # Create contour plot
+# fig = plt.figure()
+# contour = plt.contourf(x, y, both, 1000, cmap="cividis")
+# cbar = plt.colorbar(contour)
+# cbar.set_label(r"Sum of closest approach distances to Callisto and Ganymede centres (kms$^{-2}$)")
+# plt.xlabel(r"Starting position, $\delta$ (rad)")
+# plt.ylabel(r"Initial velocity direction, $\phi$ (rad)")
+# plt.title("Contour plot of the sum of closest approach distances to Callisto and\nGanymede centres"
+#           r" as a function of $\delta$ and $\phi$ for initial time 59222.05 MJD")
 
 plt.show()

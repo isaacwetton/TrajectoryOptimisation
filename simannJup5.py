@@ -138,11 +138,11 @@ def find_semimajor(delta, phi, MJD):
     return required_p
 
 
-result, vals, tested = optimise.simann(find_semimajor, 0.05, 0.001, 0, 1.0, (0, 2*np.pi), (-0.2, 0.2), (59226.42, 59227.42), track_evolution=True)
+result, vals, tested = optimise.simann(find_semimajor, 0.05, 0.001, 0, 1.0, (1.0, 2.0), (0.05, 0.1), (59226.67, 59227.17), track_evolution=True)
 print(vals)
 print(result)
 
 # Save data
-f = open("data/simannJup4tested1.dat", "wb")
+f = open("data/simannJup5tested1.dat", "wb")
 pickle.dump(tested, f, True)
 f.close()
