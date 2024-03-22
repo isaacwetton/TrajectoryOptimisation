@@ -3,7 +3,7 @@ import constants
 from matplotlib import pyplot as plt
 
 # Load data
-f = open("data/contour3data5.dat", "rb")
+f = open("data/contour3data6.dat", "rb")
 (x, y, closest_cal, closest_gan) = pickle.load(f)
 f.close()
 
@@ -12,26 +12,26 @@ grav_cal = constants.MU_CALLISTO / (closest_cal ** 2)
 grav_gan = constants.MU_GANYMEDE / (closest_gan ** 2)
 both_grav = grav_cal + grav_gan
 
-# Create contour plot
-fig = plt.figure()
-contour = plt.contourf(x, y, both_grav, 1000, cmap="cividis")
-cbar = plt.colorbar(contour)
-cbar.set_label("Sum of maximum gravitational acceleration contribution\n"
-               "magnitudes from Callisto and Ganymede (kms$^{-2}$)")
-plt.xlabel(r"Starting position, $\delta$ (rad)")
-plt.ylabel(r"Initial velocity direction, $\phi$ (rad)")
-plt.title("Contour plot of the sum of maximum gravitational acceleration contributions from Callisto\nand "
-          r"Ganymede centres (kms$^{-2}$)"
-          r" as a function of $\delta$ and $\phi$ for initial time 59222.05 MJD")
-
 # # Create contour plot
 # fig = plt.figure()
-# contour = plt.contourf(x, y, both, 1000, cmap="cividis")
+# contour = plt.contourf(x, y, both_grav, 1000, cmap="cividis")
 # cbar = plt.colorbar(contour)
-# cbar.set_label(r"Sum of closest approach distances to Callisto and Ganymede centres (kms$^{-2}$)")
+# cbar.set_label("Sum of maximum gravitational acceleration contribution\n"
+#                "magnitudes from Callisto and Ganymede (kms$^{-2}$)")
 # plt.xlabel(r"Starting position, $\delta$ (rad)")
 # plt.ylabel(r"Initial velocity direction, $\phi$ (rad)")
-# plt.title("Contour plot of the sum of closest approach distances to Callisto and\nGanymede centres"
+# plt.title("Contour plot of the sum of maximum gravitational acceleration contributions from Callisto\nand "
+#           r"Ganymede centres (kms$^{-2}$)"
 #           r" as a function of $\delta$ and $\phi$ for initial time 59222.05 MJD")
+
+# Create contour plot
+fig = plt.figure()
+contour = plt.contourf(x, y, both, 1000, cmap="cividis")
+cbar = plt.colorbar(contour)
+cbar.set_label(r"Sum of closest approach distances to Callisto and Ganymede centres (kms$^{-2}$)")
+plt.xlabel(r"Starting position, $\delta$ (rad)")
+plt.ylabel(r"Initial velocity direction, $\phi$ (rad)")
+plt.title("Contour plot of the sum of closest approach distances to Callisto and\nGanymede centres"
+          r" as a function of $\delta$ and $\phi$ for initial time 59222.05 MJD")
 
 plt.show()

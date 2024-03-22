@@ -17,7 +17,7 @@ solutions = s1 * s2
 counter = 0
 
 # Define constants
-T0 = 59222.05 * constants.DAY_IN_SECONDS
+T0 = 59093.3 * constants.DAY_IN_SECONDS
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Initialise Jupiter
@@ -110,6 +110,6 @@ for i in range(0, len(deltas)):
         print("Completed test of solution " + str(counter) + " of " + str(solutions))
 
 # Save data
-f = open("data/contour3data5.dat", "wb")
+f = open("data/contour3data6.dat", "wb")
 pickle.dump((x, y, closest_cal, closest_gan), f, True)
 f.close()

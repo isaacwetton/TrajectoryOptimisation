@@ -25,6 +25,8 @@ semimajors = []
 times = []
 vels = []
 Jdists = []
+gan_map_lats = []
+gan_map_lons = []
 
 # Initialise Jupiter
 jupiter = Particle.Particle(name="Jupiter", mu=constants.MU_JUPITER)
@@ -62,6 +64,7 @@ Jdist = initial_Jdist
 # Evolve and record positions
 closest_jup = Jdist
 closest_gan = np.linalg.norm(orbiter.position - moon_obj[2].position)
+closest_gan_pos = orbiter.position - moon_obj[2].position
 
 # Thrust applied?
 thrusted = False
@@ -122,6 +125,12 @@ for i in range(3000000):
     vels.append(np.linalg.norm(orbiter.velocity))
     Jdists.append(np.linalg.norm(orbiter.position))
 
+    # Ganymede mapping points
+    if 50 < np.linalg.norm(orbiter.position - moon_obj[2].position) - constants.R_GANYMEDE < 2000:
+        current_pos = orbiter.position - moon_obj[2].position
+        gan_map_lats.append(np.arctan(current_pos[2] / np.sqrt((current_pos[0] ** 2) + (current_pos[1] ** 2))))
+        gan_map_lons.append(np.arctan2(current_pos[0], current_pos[1]))
+
     # If exiting range then break
     if Jdist > initial_Jdist:
         break
@@ -129,10 +138,18 @@ for i in range(3000000):
     # Update closest Jupiter approach
     if closest_jup > Jdist:
         closest_jup = Jdist
+    else:
+        # current_pos = closest_gan_pos
+        # print(np.arctan(current_pos[2] / np.sqrt((current_pos[0] ** 2) + (current_pos[1] ** 2))) * 360 / (2*np.pi))
+        # print(np.arctan2(current_pos[0], current_pos[1]) * 360 / (2*np.pi))
+        # exit()
+        break
 
     # Update closest Ganymede approach
     if np.linalg.norm(orbiter.position - moon_obj[2].position) < closest_gan:
         closest_gan = np.linalg.norm(orbiter.position - moon_obj[2].position)
+        closest_gan_pos = orbiter.position - moon_obj[2].position
+
 
 
 # # Continue evolution
@@ -186,7 +203,7 @@ print(util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.ve
 print(closest_jup)
 
 # Save data
-f = open("data/gam7data2.dat", "wb")
-pickle.dump((orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, vels, Jdists), f, True)
+f = open("data/gam8data1.dat", "wb")
+pickle.dump((gan_map_lats, gan_map_lons), f, True)
 f.close()
 print("Done")

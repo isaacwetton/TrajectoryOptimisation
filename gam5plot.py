@@ -52,7 +52,7 @@ plt.scatter(0, 0, c="k")
 plt.legend(["Callisto", "Ganymede", "Io", "Europa", "Orbiter", "Jupiter"])
 
 plt.title("Orbiter trajectory shown in the XY plane for initial conditions\n"
-          r"$\delta = 4.349$, $\phi = -0.02485$, MJD = 59227.3")
+          r"$\delta = 4.653$, $\phi = -0.02744$, MJD = 59093.5")
 plt.xlabel(r"X position (km)")
 plt.ylabel("Y position (km)")
 plt.show()

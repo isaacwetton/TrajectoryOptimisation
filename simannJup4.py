@@ -9,7 +9,7 @@ from scipy.interpolate import RegularGridInterpolator
 import pickle
 
 # Load data
-f = open("data/contour3data4.dat", "rb")
+f = open("data/contour3data5.dat", "rb")
 (x, y, closest_cal, closest_gan) = pickle.load(f)
 both = closest_cal + closest_gan
 both2 = np.matrix.transpose(both)  # Required matrix transpose???
@@ -138,11 +138,11 @@ def find_semimajor(delta, phi, MJD):
     return required_p
 
 
-result, vals, tested = optimise.simann(find_semimajor, 0.05, 0.001, 0, 1.0, (0, 2*np.pi), (-0.2, 0.2), (59226.42, 59227.42), track_evolution=True)
+result, vals, tested = optimise.simann(find_semimajor, 0.05, 0.001, 0, 1.0, (0, 2*np.pi), (-0.1, 0.1), (59221.80, 59222.30), track_evolution=True)
 print(vals)
 print(result)
 
 # Save data
-f = open("data/simannJup4tested1.dat", "wb")
+f = open("data/simannJup4tested2.dat", "wb")
 pickle.dump(tested, f, True)
 f.close()

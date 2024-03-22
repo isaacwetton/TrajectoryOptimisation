@@ -29,7 +29,7 @@ orbit_tail_fraction = 0.25
 # fraction of the orbit period forward to the current time we are drawing.  Then
 # calculate positions.  Then draw the tail and a circle for the current moon position.
 fig = plt.Figure(figsize=(10,10))
-for mjd_centre in np.arange(constants.EPOCH_MJD0, constants.EPOCH_MJD0+10.0, 3600.0/constants.DAY_IN_SECONDS):
+for mjd_centre in np.arange(constants.EPOCH_MJD0+350.0, constants.EPOCH_MJD0+1000.0, 3600.0/constants.DAY_IN_SECONDS):
 
     # Clear the plot.
     plt.cla()
