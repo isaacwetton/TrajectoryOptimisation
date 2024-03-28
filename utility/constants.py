@@ -1,6 +1,8 @@
 """These are all the orbital and physics constants for the GTOC6 problem
 """
 
+import numpy as np
+
 ##
 # Moon radii [km] and standard gravitational parameters [km^3/s^2]
 R_IO = 1826.5
@@ -62,5 +64,9 @@ M0_IO = 286.85240405645
 M0_EUROPA = 318.00776678240
 M0_GANYMEDE = 220.59841030407
 M0_CALLISTO = 321.07650614246
+
+# Orbital periods
+T_GANYMEDE = 2*np.pi * np.sqrt((A_GANYMEDE ** 3) / MU_JUPITER)
+# T_GANYMEDE = 7.15455296 * DAY_IN_SECONDS
 
 

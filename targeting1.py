@@ -150,7 +150,7 @@ tof = 7.15455296 * constants.DAY_IN_SECONDS - T_peri
 vi, vf = izzo2015(constants.MU_JUPITER, ri, rf, tof)
 
 # Calculation of deltaV and required propellant
-delta_v_vec = vf - orbiter.velocity
+delta_v_vec = vi - orbiter.velocity
 delta_v = np.linalg.norm(delta_v_vec)
 required_p = (orbiter.mu / G) * (1 - np.exp(-(delta_v * 1000) / (2000 * g)))
 

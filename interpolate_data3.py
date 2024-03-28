@@ -5,7 +5,7 @@ import pickle
 import numpy as np
 
 # Load data
-f = open("data/targeting1data1.dat", "rb")
+f = open("data/targeting2data1.dat", "rb")
 orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, lats, lons = pickle.load(f)
 f.close()
 
@@ -43,7 +43,7 @@ ioxpos = np.interp(new_times, t_start_of_mission, iopos[:,0])
 ioypos = np.interp(new_times, t_start_of_mission, iopos[:,1])
 times = np.interp(new_times, t_start_of_mission, times)
 
-fout = open("data/targeting1data1_pickle.pickle", "wb")
+fout = open("data/targeting2data1_pickle.pickle", "wb")
 pickle.dump([orbxpos, orbypos,
              calxpos, calypos,
              ganxpos, ganypos,

@@ -3,9 +3,10 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 # Load data
-f = open("data/targeting1data2.dat", "rb")
+f = open("data/targeting2data2.dat", "rb")
 orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, lats, lons = pickle.load(f)
 f.close()
+
 
 alats = np.array(lats, dtype=float)
 alons = np.array(lons, dtype=float)
@@ -14,8 +15,10 @@ alons *= 360 / (2*np.pi)
 
 # Create plot
 fig = plt.figure()
+img = plt.imread("Plots + Animations/GanymedeSurfaceFaces.png")
 ax = fig.add_subplot(111)
-plt.scatter(alons, alats, c="k", s=1)
+ax.imshow(img, extent=[-180, 180, -90, 90])
+plt.scatter(alons, alats, c="r", s=1)
 plt.title("Orbiter latitudes and longitudes with respect to Ganymede recorded\nwhen in valid Ganymede flyby altitude range")
 plt.xlabel(r"Longitude ($\degree$)")
 plt.ylabel(r"Latitude ($\degree$)")

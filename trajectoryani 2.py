@@ -219,7 +219,7 @@ class AnimateTrajectory:
 
 #animtraj = AnimateTrajectory("gam7data2_short.pickle")
 animtraj = AnimateTrajectory()
-animtraj.load_interpolated_data("data/targeting1data1_pickle.pickle")
+animtraj.load_interpolated_data("data/targeting2data1_pickle.pickle")
 animtraj.setup_figure()
 ani = animtraj.animate()
 plt.show()
