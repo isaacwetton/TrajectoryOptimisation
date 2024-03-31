@@ -124,7 +124,7 @@ while Jdist == closest_jup:
         current_pos = orbiter.position - moon_obj[2].position
         current_pos_gtoc = np.array([current_pos.dot(b1), current_pos.dot(b2), current_pos.dot(b3)], dtype=float)
         gan_map_lats.append(np.arctan(current_pos_gtoc[2] / np.sqrt((current_pos_gtoc[0] ** 2) + (current_pos_gtoc[1] ** 2))))
-        gan_map_lons.append(np.arctan2(current_pos_gtoc[0], current_pos_gtoc[1]))
+        gan_map_lons.append(np.arctan2(current_pos_gtoc[1], current_pos_gtoc[0]))
 
     # If exiting range then break
     if Jdist > initial_Jdist:
@@ -182,6 +182,13 @@ print(orbiter.mu / G)
 next_flyby_gan_pos = moons[2](T_nextflyby)[0:3]
 distdiff = np.linalg.norm(flyby_gan_pos - next_flyby_gan_pos)
 print("Ganymede offset from expected position: " + str(distdiff) + " km")
+
+# Determine latitude and longitude of rf
+current_pos = rf - next_flyby_gan_pos
+current_pos_gtoc = np.array([current_pos.dot(b1), current_pos.dot(b2), current_pos.dot(b3)], dtype=float)
+print(
+    np.arctan(current_pos_gtoc[2] / np.sqrt((current_pos_gtoc[0] ** 2) + (current_pos_gtoc[1] ** 2))))
+print(np.arctan2(current_pos_gtoc[1], current_pos_gtoc[0]))
 
 # Continue evolution until around next periapsis (after 1 Ganymede period)
 T_stop = T + constants.T_GANYMEDE
@@ -262,7 +269,7 @@ while T < T_stop:
         current_pos_gtoc = np.array([current_pos.dot(b1), current_pos.dot(b2), current_pos.dot(b3)], dtype=float)
         gan_map_lats.append(
             np.arctan(current_pos_gtoc[2] / np.sqrt((current_pos_gtoc[0] ** 2) + (current_pos_gtoc[1] ** 2))))
-        gan_map_lons.append(np.arctan2(current_pos_gtoc[0], current_pos_gtoc[1]))
+        gan_map_lons.append(np.arctan2(current_pos_gtoc[1], current_pos_gtoc[0]))
 
         # current_pos = orbiter.position - moon_obj[2].position
         # gan_map_lats.append(np.arctan(current_pos[2] / np.sqrt((current_pos[0] ** 2) + (current_pos[1] ** 2))))
