@@ -31,29 +31,29 @@ for i in range(len(simann_decs)):
     simann_errors.append(errors / tests)
 
 # monte_sols = ["10", "50", "100", "1000", "5000", "10000", "50000", "100000"]
-monte_sols = np.rint(np.exp(np.linspace(3, 15, 100)))
+monte_sols = np.rint(np.exp(np.linspace(3, 15, 100))) / 2
 monte_times = []
 monte_errors = []
 
 for i in range(len(monte_sols)):
-    t_monte = timeit("result, vals = optimise.montecarlo(quadratic, 0, " + str(int(monte_sols[i])) + ", 0, (-5.0, 5.0))",
+    t_monte = timeit("result, vals = optimise.montecarlo(quadratic, 0, " + str(int(monte_sols[i])) + ", 1, (-5.0, 5.0))",
                      setup=setup, number=tests)
     monte_times.append(t_monte / tests)
     errors = 0
     for j in range(tests):
-        result, vals = optimise.montecarlo(quadratic, 0, int(monte_sols[i]), 0, (-5.0, 5.0))
+        result, vals = optimise.montecarlo(quadratic, 0, int(monte_sols[i]), 1, (-5.0, 5.0))
         errors += abs(result)
     monte_errors.append(errors / tests)
 
 # monte_lhs = "result, vals = optimise.monte_lhs(quadratic, 0, 100000, 1, (-5.0, 5.0))"
 
 # Save simann data
-f = open("data/timeit2simann.dat", "wb")
+f = open("data/timeitFsimann.dat", "wb")
 pickle.dump((simann_decs, simann_errors, simann_times), f, True)
 f.close()
 
 # Save montecarlo data
-f = open("data/timeit2monte.dat", "wb")
+f = open("data/timeitFmonte.dat", "wb")
 pickle.dump((monte_sols, monte_errors, monte_times), f, True)
 f.close()
 

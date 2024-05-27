@@ -5,8 +5,8 @@ import pickle
 import numpy as np
 
 # Load data
-f = open("data/targeting2data1.dat", "rb")
-orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, lats, lons = pickle.load(f)
+f = open("data/targeting3data1.dat", "rb")
+orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, gan_map_lats, gan_map_lons, orbmass = pickle.load(f)
 f.close()
 
 # Get orbiterpositions
@@ -43,7 +43,7 @@ ioxpos = np.interp(new_times, t_start_of_mission, iopos[:,0])
 ioypos = np.interp(new_times, t_start_of_mission, iopos[:,1])
 times = np.interp(new_times, t_start_of_mission, times)
 
-fout = open("data/targeting2data1_pickle.pickle", "wb")
+fout = open("data/targeting3_pickle.pickle", "wb")
 pickle.dump([orbxpos, orbypos,
              calxpos, calypos,
              ganxpos, ganypos,

@@ -11,8 +11,8 @@ import util
 initial_Jdist = 1000 * constants.R_JUPITER
 
 # Define delta & phis
-delta = 4.653091591250735
-phi = -0.027438378654921707
+delta = 4.349334252624266
+phi = -0.02484535847389848
 
 # Define lists to store results
 orbpos = []
@@ -40,7 +40,7 @@ initvel = np.array([3.4 * np.cos(vel_angle), 3.4 * np.sin(vel_angle), 0], dtype=
 orbiter = Particle.Particle(position=initpos, velocity=initvel, name="Orbiter", mu=2000.0 * G)
 
 # Initial time
-T = 59093.52549572423 * constants.DAY_IN_SECONDS
+T = 59227.31006384439 * constants.DAY_IN_SECONDS
 
 # Initialise Galilean Moon Objects
 moons = [bodies.get_io(), bodies.get_europa(), bodies.get_ganymede(), bodies.get_callisto()]
@@ -94,17 +94,17 @@ for i in range(3000000):
     moon_obj[2].position = np.array(moon_states[2][0:3], dtype=float)
     moon_obj[3].position = np.array(moon_states[3][0:3], dtype=float)
 
-    # Apply thrust at periapsis
-    if abs(Jdist - 151117) < 1.0 and not thrusted:
-        print(np.linalg.norm(orbiter.velocity))
-        orbiter.mu -= 145.3 * G
-        delta_v = (2000 * g * np.log(2000 / (2000 - 145.3))) / 1000
-        unitvec_vel = orbiter.velocity / np.linalg.norm(orbiter.velocity)
-        delta_v_vec = delta_v * -unitvec_vel
-        orbiter.velocity += delta_v_vec
-        print(np.linalg.norm(delta_v_vec))
-        print(np.linalg.norm(orbiter.velocity))
-        thrusted = True
+    # # Apply thrust at periapsis
+    # if abs(Jdist - 143421) < 1.0 and not thrusted:
+    #     print(np.linalg.norm(orbiter.velocity))
+    #     orbiter.mu -= 153.1 * G
+    #     delta_v = (2000 * g * np.log(2000 / (2000 - 153.1))) / 1000
+    #     unitvec_vel = orbiter.velocity / np.linalg.norm(orbiter.velocity)
+    #     delta_v_vec = delta_v * -unitvec_vel
+    #     orbiter.velocity += delta_v_vec
+    #     print(np.linalg.norm(delta_v_vec))
+    #     print(np.linalg.norm(orbiter.velocity))
+    #     thrusted = True
 
     # Output message if Jupiter collision occurs
     if Jdist < 2 * constants.R_JUPITER:
@@ -186,7 +186,7 @@ print(util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.ve
 print(closest_jup)
 
 # Save data
-f = open("data/gam7data2.dat", "wb")
+f = open("data/gam7data4.dat", "wb")
 pickle.dump((orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, vels, Jdists), f, True)
 f.close()
 print("Done")

@@ -3,7 +3,7 @@ from matplotlib import pyplot as plt
 import numpy as np
 
 # Load data
-f = open("data/targeting3data1.dat", "rb")
+f = open("data/targeting3dataPERI.dat", "rb")
 orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, lats, lons, orbmass = pickle.load(f)
 f.close()
 

@@ -45,7 +45,7 @@ for pos in iopos:
 # Create plot
 plt.rcParams["font.family"] = "Kepler", "Kepler Std", "serif"
 plt.rcParams["font.size"] = 12
-plt.rcParams["figure.figsize"] = (7, 5.5)
+plt.rcParams["figure.figsize"] = (7, 7)
 plt.rcParams["figure.dpi"] = 150
 plt.plot(calxpos, calypos, "#c43e27")
 plt.plot(ganxpos, ganypos, "#39667b")
@@ -68,4 +68,6 @@ plt.yticks(np.linspace(-2.5e6, 0.5e6, num=7, endpoint=True))
 # plt.ylim([-2.5e6, 2.5e6])
 # plt.xticks(np.linspace(-2.5e6, 2.5e6, num=11, endpoint=True))
 # plt.yticks(np.linspace(-2.5e6, 2.5e6, num=11, endpoint=True))
+# plt.gca().set_aspect("equal")
+plt.savefig('test.png')
 plt.show()

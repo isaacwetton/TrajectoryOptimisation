@@ -15,10 +15,10 @@ class AnimateTrajectory:
         self.plot_length_units = constants.R_JUPITER
         self.plot_length_units_label = r"[$\mathrm{R}_\mathrm{J}$]"
         self.orb_col = "k"
-        self.cal_col = "tab:purple"
-        self.gan_col = "tab:green"
-        self.eur_col = "tab:blue"
-        self.io_col = "tab:orange"
+        self.cal_col = "#c43e27"
+        self.gan_col = "#39667b"
+        self.eur_col = "#e39c1b"
+        self.io_col = "#839435"
 
     def load_original_data(self, filename):
         """Load data from one of the original data files
@@ -184,6 +184,9 @@ class AnimateTrajectory:
         self.ax.add_artist(patches.Circle((self.ioxpos[i]/self.plot_length_units, self.ioypos[i]/self.plot_length_units),
                                           0.5*constants.R_JUPITER/self.plot_length_units, ec=self.io_col, fc=self.io_col))
 
+        plt.legend(["Orbiter", "Callisto", "Ganymede", "Io", "Europa"], loc="lower left", fontsize=12)
+        plt.rcParams["font.family"] = "Kepler", "Kepler Std", "serif"
+
         # Set the limits - this code tries to centre the view on the spacecraft - so that the plot
         # moves with it.
         miny = min(self.orbypos[i]-100*constants.R_JUPITER, -100*constants.R_JUPITER)
@@ -219,10 +222,10 @@ class AnimateTrajectory:
 
 #animtraj = AnimateTrajectory("gam7data2_short.pickle")
 animtraj = AnimateTrajectory()
-animtraj.load_interpolated_data("data/targeting2data1_pickle.pickle")
+animtraj.load_interpolated_data("data/targeting3_pickle.pickle")
 animtraj.setup_figure()
 ani = animtraj.animate()
-plt.show()
+# plt.show()
 # #Save animation as .gif file
 # writer = PillowWriter(fps=30,
 #                       metadata=dict(),
@@ -230,6 +233,6 @@ plt.show()
 #                       )
 # ani.save('trajectory.gif', writer=writer)
 
-# # Save animation as .mp4 file
-# writer = FFMpegWriter(fps=60)
-# ani.save('Plots + Animations/contour3ani.mp4', writer=writer)
+# Save animation as .mp4 file
+writer = FFMpegWriter(fps=60)
+ani.save('Plots + Animations/targeting3.mp4', writer=writer)

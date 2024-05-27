@@ -44,7 +44,7 @@ def simann(func, increase, decrease, target, temp, *spaces, track_evolution=Fals
         if temp > 1.0:
             temp = 1.0
 
-        print("Temperature: " + str(temp))
+        # print("Temperature: " + str(temp))
 
         # Define new values
         for i in range(0, len(vals)):
@@ -58,7 +58,7 @@ def simann(func, increase, decrease, target, temp, *spaces, track_evolution=Fals
         return best, vals0, tested
 
 
-def montecarlo(func, target, sols_no, multistages, *spaces):
+def montecarlo(func, target, sols_no, multistages, *spaces, track_evolution=False):
     # List of variables for function
     vals = [None] * len(spaces)
 
@@ -79,9 +79,18 @@ def montecarlo(func, target, sols_no, multistages, *spaces):
     best = None
     values = None
 
+    # Create lists for tracking tested combinations
+    if track_evolution:
+        tested = []
+
     # Test solutions and output result
     for solution in sols:
         result = func(*solution)
+
+        # Add values and result to tracked tests
+        if track_evolution:
+            tested.append([*solution, result])
+
         if best is None:
             best = result
             values = solution
@@ -107,6 +116,11 @@ def montecarlo(func, target, sols_no, multistages, *spaces):
             # Test solutions and output result
             for solution in sols:
                 result = func(*solution)
+
+                # Add values and result to tracked tests
+                if track_evolution:
+                    tested.append([*solution, result])
+
                 if best is None:
                     best = result
                     values = solution
@@ -114,7 +128,7 @@ def montecarlo(func, target, sols_no, multistages, *spaces):
                     best = result
                     values = solution
 
-    return best, values
+    return best, values, tested
 
 
 def monte_lhs(func, target, sols_no, multistages, *spaces):

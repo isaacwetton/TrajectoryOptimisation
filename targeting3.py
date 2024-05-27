@@ -12,7 +12,7 @@ import copy
 
 def save_data():
     global orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, gan_map_lats, gan_map_lons, orbmass
-    f = open("data/targeting3data1.dat", "wb")
+    f = open("data/targeting3dataPERI.dat", "wb")
     pickle.dump((orbpos, orbvel, calpos, ganpos, iopos, eurpos, semimajors, times, gan_map_lats, gan_map_lons, orbmass),
                 f, True)
     f.close()
@@ -209,6 +209,8 @@ del faces1["22"]
 score += 1
 flybys = 1
 
+# Save periapsis data and exit
+save_data()
 
 # Function for determining accessible faces:
 def find_access(facedict):

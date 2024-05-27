@@ -19,7 +19,7 @@ f.close()
 s1, s2 = 25, 25
 deltas = np.linspace(0, 2*np.pi, s1)
 phis = np.linspace(-0.2, 0.2, s2, endpoint=True)
-interp = RegularGridInterpolator((deltas, phis), both2)
+interp = RegularGridInterpolator((deltas, phis), both2, bounds_error=False, fill_value=None)
 
 
 def find_semimajor(delta, phi, MJD):
@@ -125,6 +125,9 @@ def find_semimajor(delta, phi, MJD):
             break
         elif 5 * constants.R_JUPITER > util.semimajor(np.linalg.norm(orbiter.position), np.linalg.norm(orbiter.velocity), constants.MU_JUPITER) > 0:
             break
+        elif T > 60000 * constants.DAY_IN_SECONDS:
+            print("Excessive time taken")
+            return 1e10
 
     # Return positive semi-major axis or modified negative semi-major axis
     # If semi-major axis is >1e9, it is likely negative: subtract 1e9 and invert sign to retrieve
@@ -138,11 +141,11 @@ def find_semimajor(delta, phi, MJD):
     return required_p
 
 
-result, vals, tested = optimise.simann(find_semimajor, 0.1, 0.005, 0, 1.0, (0, 2*np.pi), (-0.1, 0.1), (59092.3, 59094.3), track_evolution=True)
+result, vals, tested = optimise.montecarlo(find_semimajor, 0, 150, 1, (0, 2*np.pi), (-0.1, 0.1), (59092.3, 59094.3), track_evolution=True)
 print(vals)
 print(result)
 
 # Save data
-f = open("data/simannJup4tested4.dat", "wb")
+f = open("data/monte1test1.dat", "wb")
 pickle.dump(tested, f, True)
 f.close()

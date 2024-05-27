@@ -3,7 +3,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 # Load data
-f = open("data/simannJup4tested1.dat", "rb")
+f = open("data/monte1test1.dat", "rb")
 tested = pickle.load(f)
 f.close()
 
@@ -18,8 +18,13 @@ for i in tested:
 x = np.arange(1, len(y) + 1)
 
 # Create plot
-plt.plot(x, y, "k")
-plt.title("A plot of identified required propellants for successive simulated annealing tests")
-plt.xlabel(r"Test")
-plt.ylabel("Mass of propellant required for ideal capture (kg)")
+plt.rcParams["font.family"] = "Kepler", "Kepler Std", "serif"
+plt.rcParams["font.size"] = 13
+plt.rcParams["figure.figsize"] = (7, 5.5)
+plt.rcParams["figure.dpi"] = 150
+
+plt.plot(x, y, "#342f29")
+# plt.title("A plot of identified required propellants\nfor successive simulated annealing tests")
+plt.xlabel(r"Test", fontsize=13)
+plt.ylabel("Propellant required for capture (kg)", fontsize=13)
 plt.show()

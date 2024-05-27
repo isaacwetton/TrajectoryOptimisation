@@ -8,16 +8,26 @@ from matplotlib.animation import PillowWriter
 from matplotlib.animation import FFMpegWriter
 
 # Load contour data
-f = open("data/contour3data1.dat", "rb")
+f = open("data/contour3data6.dat", "rb")
 (x, y, closest_cal, closest_gan) = pickle.load(f)
 f.close()
 both = closest_cal + closest_gan
+minimum = []
+for i in range(len(closest_cal)):
+    minrow = []
+    for j in range(len(closest_cal[i])):
+        if closest_cal[i][j] < closest_gan[i][j]:
+            minrow.append(closest_cal[i][j])
+        else:
+            minrow.append(closest_gan[i][j])
+    minimum.append(minrow)
+
 # Convert to degrees
 x *= 360 / (2*np.pi)
 y *= 360 / (2*np.pi)
 
-# Load simann test data
-f = open("data/simannJup2tested3.dat", "rb")
+# Load test data
+f = open("data/monte1test1.dat", "rb")
 pre_tested = pickle.load(f)
 tested = []
 for i in pre_tested:
@@ -25,7 +35,7 @@ for i in pre_tested:
     vals = []
     for j in pre_vals:
         vals.append(j*(360 / (2*np.pi)))
-    tested.append([*vals, i[2]])
+    tested.append([*vals, i[3]])
 f.close()
 
 # Generate lists of evolving best solutions and worse solutions
@@ -86,7 +96,7 @@ good_deltas =[]
 
 # Animation setup
 j = 0
-best = -1e10
+best = 1e10
 
 # Create figure
 fig = plt.figure(figsize=(8, 6))
@@ -105,19 +115,15 @@ def animate(i):
             testing_phi = tested[j+1][1]
 
         output = tested[j][-1]
-        if output >= 1e9:
-            output = - (output - 1e9)
-        if best < 0 and output > best:
-            best = output
+        if output < best:
             good_deltas.append(tested[j][0])
-            good_phis.append(tested[j][1])
-        elif best > output > 0:
+            good_phis.append((tested[j][1]))
             best = output
-            good_deltas.append(tested[j][0])
-            good_phis.append(tested[j][1])
-        elif output != -1e10:
+            print(output)
+        elif output != 1e10:
             bad_deltas.append(tested[j][0])
-            bad_phis.append(tested[j][1])
+            bad_phis.append((tested[j][1]))
+            print(tested[j])
 
     # Increase j
     j += 1
@@ -128,14 +134,15 @@ def animate(i):
     ax.set_xlim([0, 360])
     ax.set_xlabel(r"Starting position, $\delta$ ($\degree$)")
     ax.set_ylabel(r"Initial velocity direction, $\phi$ ($\degree$)")
-    ax.set_title("A plot of the evolution of the best solution within the search space\n"
-                 "for simulated annealing of the Jupiter capture")
+    # ax.set_title("A plot of the evolution of the best solution within the search space\n"
+    #              "for simulated annealing of the Jupiter capture")
     ax.set_xticks(np.arange(0, 450, step=90))
 
     # Plot contour
-    contour = ax.contourf(x, y, both, 1000, cmap="cividis")
+    contour = ax.contourf(x, y, minimum, 1000, cmap="cividis")
     cbar = plt.colorbar(contour)
-    cbar.set_label("Sum of closest approaches to Callisto and Ganymede (km)")
+    cbar.set_label("Minimum closest approach distance to\neither Callisto or "
+                   r"Ganymede centres ($\times$ 10$^{6}$ km)")
 
     # Plot tested solution
     if testing_delta is None:
@@ -171,6 +178,7 @@ ani = FuncAnimation(fig, animate, repeat=True,
 #                       )
 # ani.save('Plots + Animations/contour3ani.gif', writer=writer)
 
-# Save animation as .mp4 file
-writer = FFMpegWriter(fps=60)
-ani.save('Plots + Animations/contour3ani.mp4', writer=writer)
+plt.show()
+# # Save animation as .mp4 file
+# writer = FFMpegWriter(fps=60)
+# ani.save('Plots + Animations/contour3ani.mp4', writer=writer)
